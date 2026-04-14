@@ -16,9 +16,6 @@ public class ChatbotService
         _logger = logger;
     }
 
-    /// <summary>
-    /// Call Python RAG service on port 8001 to generate chatbot replies
-    /// </summary>
     public async Task<string> ChatAsync(ChatRequest? request, CancellationToken cancellationToken = default)
     {
         var userMessage = request?.Message?.Trim() ?? string.Empty;
@@ -32,7 +29,6 @@ public class ChatbotService
             var client = _httpClientFactory.CreateClient();
             client.Timeout = TimeSpan.FromSeconds(30);
 
-            // Convert ChatHistoryItem to Python-compatible format
             var historyForPython = request?.History?.Select(h => new
             {
                 role = h.Role,

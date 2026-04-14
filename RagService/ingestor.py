@@ -17,7 +17,6 @@ def build_documents(cursor) -> tuple[list[str], list[str]]:
     documents = []
     ids = []
 
-    # ── Phim ──────────────────────────────────────────────
     try:
         cursor.execute("""
             SELECT id, title, genre, duration_min,
@@ -39,7 +38,6 @@ def build_documents(cursor) -> tuple[list[str], list[str]]:
     except Exception as e:
         print(f"Error fetching movies: {e}")
 
-    # ── Suất chiếu ────────────────────────────────────────
     try:
         cursor.execute("""
             SELECT s.id, m.title, ci.name, r.name,
@@ -66,7 +64,6 @@ def build_documents(cursor) -> tuple[list[str], list[str]]:
     except Exception as e:
         print(f"Error fetching showtimes: {e}")
 
-    # ── Snacks ────────────────────────────────────────────
     try:
         cursor.execute("""
             SELECT id, name, description, price, category
@@ -86,7 +83,6 @@ def build_documents(cursor) -> tuple[list[str], list[str]]:
     except Exception as e:
         print(f"Error fetching snacks: {e}")
 
-    # ── Rạp chiếu ─────────────────────────────────────────
     try:
         cursor.execute("SELECT id, name, address, city FROM cinemas")
         for c in cursor.fetchall():
@@ -99,7 +95,6 @@ def build_documents(cursor) -> tuple[list[str], list[str]]:
     except Exception as e:
         print(f"Error fetching cinemas: {e}")
 
-    # ── Khuyến mãi ────────────────────────────────────────
     try:
         cursor.execute("""
             SELECT id, code, description, discount_percent, valid_to
@@ -139,7 +134,6 @@ def ingest(embed_model: SentenceTransformer,
             print("No documents to ingest")
             return 0
 
-        # Xóa dữ liệu cũ
         try:
             existing = collection.get()
             if existing and existing.get("ids"):
@@ -147,7 +141,6 @@ def ingest(embed_model: SentenceTransformer,
         except Exception as e:
             print(f"Error deleting old documents: {e}")
 
-        # Tạo embedding — prefix "passage:" theo chuẩn E5 model
         print(f"Encoding {len(documents)} documents...")
         embeddings = embed_model.encode(
             [f"passage: {d}" for d in documents],

@@ -36,7 +36,6 @@ def sql_realtime_context(message: str) -> str:
         conn = mysql.connector.connect(**DB_CONFIG)
         cursor = conn.cursor()
 
-        # Lịch chiếu hôm nay
         if any(k in msg for k in ["hôm nay", "hom nay", "hôm nay", "lich", "gio", "suat", "chieu"]):
             cursor.execute("""
                 SELECT m.title, s.start_time, r.name room,
@@ -58,7 +57,6 @@ def sql_realtime_context(message: str) -> str:
                         f"{r[0]} | {start_time_str} | {r[3]} - {r[2]} | {int(r[4]):,} VND"
                     )
 
-        # Ghế còn trống theo suất chiếu
         if any(k in msg for k in ["ghế", "ghe", "cho ngoi", "cho trong", "trong"]):
             cursor.execute("""
                 SELECT s.id, m.title, r.name room, r.total_seats,

@@ -8,10 +8,8 @@ import chromadb
 from sentence_transformers import SentenceTransformer
 from dotenv import load_dotenv
 
-# Load environment variables from .env file
 load_dotenv()
 
-# Workaround for Groq httpx compatibility
 os.environ.pop('HTTP_PROXY', None)
 os.environ.pop('HTTPS_PROXY', None)
 os.environ.pop('http_proxy', None)
@@ -27,14 +25,12 @@ except Exception as e:
 from ingestor import ingest
 from retriever import vector_search, sql_realtime_context
 
-# ── Config ───────────────────────────────────────────────
 GROQ_API_KEY  = os.environ.get("GROQ_API_KEY", "")
 GROQ_MODEL    = "llama-3.1-8b-instant"
-EMBED_MODEL   = "intfloat/multilingual-e5-small"  # nhỏ, hỗ trợ tiếng Việt
+EMBED_MODEL   = "intfloat/multilingual-e5-small"  
 CHROMA_PATH   = "./chroma_db"
 COLLECTION    = "cinema_docs"
 
-# ── Khởi tạo khi startup ─────────────────────────────────
 embed_model: SentenceTransformer = None
 collection:  chromadb.Collection = None
 groq_client: Groq = None
@@ -44,7 +40,6 @@ async def lifespan(app: FastAPI):
     global embed_model, collection, groq_client
     print("Loading embedding model...")
     try:
-        # Check GROQ_API_KEY
         if not GROQ_API_KEY:
             print("[WARNING] GROQ_API_KEY not set. Set it with: export GROQ_API_KEY='your_key'")
             print("Chat will still work but Groq API may fail. Continuing...")
@@ -53,7 +48,6 @@ async def lifespan(app: FastAPI):
         chroma       = chromadb.PersistentClient(path=CHROMA_PATH)
         collection   = chroma.get_or_create_collection(COLLECTION)
         
-        # Only create Groq client if key exists
         if GROQ_API_KEY:
             groq_client  = Groq(api_key=GROQ_API_KEY)
         else:
@@ -70,7 +64,6 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(lifespan=lifespan)
 
-# CORS config
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -79,9 +72,8 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# ── Models ───────────────────────────────────────────────
 class ChatMessage(BaseModel):
-    role: str     # "user" | "assistant"
+    role: str     
     content: str
 
 class ChatRequest(BaseModel):
@@ -89,7 +81,6 @@ class ChatRequest(BaseModel):
     history: list[ChatMessage] = []
 
 
-# ── Endpoints ────────────────────────────────────────────
 
 @app.post("/ingest")
 def ingest_endpoint():
@@ -106,18 +97,14 @@ def ingest_endpoint():
 def chat_endpoint(req: ChatRequest):
     """Nhận câu hỏi → RAG → trả lời"""
     try:
-        # Bước 1: Vector search
         chunks = vector_search(req.message, embed_model, collection, top_k=4)
 
-        # Bước 2: SQL realtime fallback
         realtime = sql_realtime_context(req.message)
 
-        # Bước 3: Build context
         context = "\n".join(f"- {c}" for c in chunks) if chunks else "Không có thông tin liên quan trong cơ sở dữ liệu."
         if realtime:
             context = realtime + "\n\n" + context
 
-        # Bước 4: System prompt
         system_prompt = f"""Bạn là trợ lý rạp phim CineStar.
 
 Quy tắc:
@@ -131,16 +118,14 @@ Quy tắc:
 DỮLIỆU:
 {context}"""
 
-        # Bước 5: Build messages (system + history + user)
         messages = [{"role": "system", "content": system_prompt}]
         
         if req.history:
-            for h in req.history[-8:]:  # giữ 8 lượt gần nhất
+            for h in req.history[-8:]:  
                 messages.append({"role": h.role, "content": h.content})
         
         messages.append({"role": "user", "content": req.message})
 
-        # Bước 6: Gọi Groq
         if not groq_client or not GROQ_API_KEY:
             return {"reply": "Xin lỗi, GROQ_API_KEY chưa được cấu hình. Hãy set: export GROQ_API_KEY='your_key'"}
 
