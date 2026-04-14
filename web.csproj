@@ -13,4 +13,8 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="config/**" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
 </Project>

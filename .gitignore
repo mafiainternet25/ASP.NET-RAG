@@ -4,8 +4,8 @@ venv/
 *.log
 *.exe
 wwwroot/lib/
-appsettings.Development.json
-appsettings.json
+config/appsettings.Development.json
+config/appsettings.json
 
 # ── Python & RAG Service ──────────────────
 RagService/venv/
@@ -17,7 +17,7 @@ RagService/*.pyc
 
 # ── VS Code & IDE ─────────────────────────
 .vscode/
-pyrightconfig.json
+config/pyrightconfig.json
 
 # ── OS ────────────────────────────────────
 .DS_Store

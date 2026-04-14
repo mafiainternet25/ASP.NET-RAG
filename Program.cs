@@ -8,6 +8,11 @@ using web.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Configuration
+    .SetBasePath(Path.Combine(builder.Environment.ContentRootPath, "config"))
+    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+    .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true, reloadOnChange: true);
+
 var connectionString = builder.Configuration.GetConnectionString("QuocPhim");
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
