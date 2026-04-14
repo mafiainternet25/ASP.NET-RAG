@@ -1,0 +1,107 @@
+/* Floating Contact Buttons */
+.floating-contact {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: flex-end;
+}
+
+.floating-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    text-decoration: none;
+    color: white;
+    font-size: 24px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transition: all 0.3s ease;
+    animation: slideIn 0.5s ease;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.floating-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+}
+
+.zalo-btn {
+    background: linear-gradient(135deg, #0084ff 0%, #0084ff 100%);
+}
+
+.zalo-btn:hover {
+    background: linear-gradient(135deg, #006ed9 0%, #006ed9 100%);
+    color: white;
+}
+
+.messenger-btn {
+    background: linear-gradient(135deg, #0084ff 0%, #007bff 100%);
+}
+
+.messenger-btn:hover {
+    background: linear-gradient(135deg, #0074e8 0%, #0069d9 100%);
+    color: white;
+}
+
+.contact-tooltip {
+    position: absolute;
+    right: 70px;
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-size: 12px;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.floating-btn:hover .contact-tooltip {
+    opacity: 1;
+    visibility: visible;
+}
+
+.phone-btn {
+    background: linear-gradient(135deg, #25d366 0%, #20c354 100%);
+}
+
+.phone-btn:hover {
+    background: linear-gradient(135deg, #20c354 0%, #1ab344 100%);
+    color: white;
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+    .floating-contact {
+        bottom: 15px;
+        right: 15px;
+    }
+
+    .floating-btn {
+        width: 50px;
+        height: 50px;
+        font-size: 20px;
+    }
+
+    .contact-tooltip {
+        right: 60px;
+        font-size: 11px;
+    }
+}

@@ -1,0 +1,58 @@
+/**
+ * Đặt vé — danh sách đồ ăn đã chọn (wwwroot để luôn load được, không phụ thuộc static Views).
+ */
+.booking-section .snack-selected-item {
+    color: #e5e5e5;
+}
+
+.booking-section .snack-selected-item strong {
+    color: #ffffff !important;
+    font-weight: 600;
+}
+
+.booking-section .snack-type-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.35rem 0.75rem;
+    margin-top: 0.4rem;
+    border-radius: 999px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    line-height: 1.35;
+    color: #022c22 !important;
+    background: linear-gradient(135deg, #6ee7b7 0%, #a7f3d0 100%) !important;
+    border: 1px solid rgba(16, 185, 129, 0.65) !important;
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.35) inset;
+}
+
+.booking-section .snack-selected-item.combo .snack-type-badge {
+    color: #422006 !important;
+    background: linear-gradient(135deg, #fde68a 0%, #fef3c7 100%) !important;
+    border-color: rgba(245, 158, 11, 0.55) !important;
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.4) inset;
+}
+
+.booking-section .snack-remove {
+    appearance: none;
+    -webkit-appearance: none;
+    flex-shrink: 0;
+    align-self: center;
+    margin-top: 0.15rem;
+    padding: 0.5rem 1.1rem;
+    border-radius: 999px;
+    font-family: inherit;
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+    color: #fecaca !important;
+    background: rgba(127, 29, 29, 0.45) !important;
+    border: 1px solid rgba(248, 113, 113, 0.65) !important;
+    transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.booking-section .snack-remove:hover {
+    color: #fff !important;
+    background: rgba(185, 28, 28, 0.65) !important;
+    border-color: #f87171 !important;
+}

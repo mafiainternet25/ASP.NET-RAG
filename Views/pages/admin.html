@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Quản trị - Quốc Phim</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <style>
+    .admin-tabs { display:flex; gap:0.5rem; flex-wrap:wrap; margin-bottom:1.5rem; }
+    .admin-tab { padding:0.5rem 1rem; background:#333; color:#ccc; border:none; cursor:pointer; border-radius:6px; }
+    .admin-tab.active { background:var(--primary); color:white; }
+    .admin-panel { display:none; }
+    .admin-panel.active { display:block; }
+    .admin-table { width:100%; border-collapse:collapse; margin-top:1rem; }
+    .admin-table th, .admin-table td { padding:0.75rem; text-align:left; border-bottom:1px solid #333; color:#e5e5e5; }
+    .admin-form { display:grid; gap:1rem; max-width:400px; margin-bottom:1.5rem; }
+    .form-row { display:flex; gap:0.5rem; align-items:flex-end; }
+    .form-row .form-control { flex:1; }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="container">
+      <a href="/" class="navbar-brand">Quốc Phim - Admin</a>
+      <ul class="nav-links">
+        <li><a href="/">Trang chủ</a></li>
+        <li><a href="/pages/admin.html">Quản trị</a></li>
+        <li id="navAuth"></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="container section">
+    <div id="adminDenied" style="display:none;padding:2rem;text-align:center">
+      <p style="color:#ef4444;margin-bottom:1rem">Bạn cần quyền Admin để truy cập trang này.</p>
+      <a class="btn btn-primary" href="/">Về trang chủ</a>
+    </div>
+    <div id="adminContent" style="display:none">
+      <h2>Quản trị hệ thống</h2>
+      <div class="admin-tabs">
+        <button class="admin-tab active" data-tab="movies">Phim</button>
+        <button class="admin-tab" data-tab="cinemas">Rạp</button>
+        <button class="admin-tab" data-tab="rooms">Phòng</button>
+        <button class="admin-tab" data-tab="showtimes">Lịch chiếu</button>
+        <button class="admin-tab" data-tab="promotions">Khuyến mãi</button>
+        <button class="admin-tab" data-tab="snacks">Đồ ăn vặt</button>
+        <button class="admin-tab" data-tab="users">Tài khoản</button>
+        <button class="admin-tab" data-tab="reports">Báo cáo</button>
+      </div>
+
+      <div id="panel-movies" class="admin-panel active">
+        <h3>Quản lý phim</h3>
+        <div class="admin-form">
+          <input id="mTitle" class="form-control" placeholder="Tên phim">
+          <input id="mGenre" class="form-control" placeholder="Thể loại">
+          <input id="mDuration" class="form-control" type="number" placeholder="Phút">
+          <input id="mPoster" class="form-control" placeholder="URL poster">
+          <select id="mStatus" class="form-control">
+            <option value="NOW_SHOWING">Đang chiếu</option>
+            <option value="COMING_SOON">Sắp chiếu</option>
+            <option value="ENDED">Kết thúc</option>
+          </select>
+          <div class="form-row">
+            <button class="btn btn-primary" onclick="addMovie()">Thêm phim</button>
+          </div>
+        </div>
+        <div id="moviesTable"></div>
+      </div>
+
+      <div id="panel-cinemas" class="admin-panel">
+        <h3>Quản lý rạp</h3>
+        <div class="admin-form">
+          <input id="cName" class="form-control" placeholder="Tên rạp">
+          <input id="cAddress" class="form-control" placeholder="Địa chỉ">
+          <input id="cCity" class="form-control" placeholder="Thành phố">
+          <button class="btn btn-primary" onclick="addCinema()">Thêm rạp</button>
+        </div>
+        <div id="cinemasTable"></div>
+      </div>
+
+      <div id="panel-rooms" class="admin-panel">
+        <h3>Quản lý phòng</h3>
+        <div class="admin-form">
+          <select id="rCinemaId" class="form-control"></select>
+          <input id="rName" class="form-control" placeholder="Tên phòng">
+          <input id="rTotalSeats" class="form-control" type="number" placeholder="Số ghế">
+          <input id="rRoomType" class="form-control" placeholder="Loại (NORMAL/3D/IMAX)">
+          <button class="btn btn-primary" onclick="addRoom()">Thêm phòng</button>
+        </div>
+        <div id="roomsTable"></div>
+      </div>
+
+      <div id="panel-showtimes" class="admin-panel">
+        <h3>Quản lý lịch chiếu</h3>
+        <div class="admin-form">
+          <select id="sMovieId" class="form-control"></select>
+          <select id="sRoomId" class="form-control"></select>
+          <input id="sStartTime" class="form-control" type="datetime-local" placeholder="Giờ chiếu">
+          <input id="sPrice" class="form-control" type="number" placeholder="Giá vé">
+          <button class="btn btn-primary" onclick="addShowtime()">Thêm suất chiếu</button>
+        </div>
+        <div id="showtimesTable"></div>
+      </div>
+
+      <div id="panel-promotions" class="admin-panel">
+        <h3>Quản lý khuyến mãi</h3>
+        <div class="admin-form">
+          <input id="pCode" class="form-control" placeholder="Mã">
+          <input id="pDesc" class="form-control" placeholder="Mô tả">
+          <input id="pPercent" class="form-control" type="number" placeholder="% giảm">
+          <input id="pFrom" class="form-control" type="date" placeholder="Từ ngày">
+          <input id="pTo" class="form-control" type="date" placeholder="Đến ngày">
+          <input id="pMaxUses" class="form-control" type="number" placeholder="Số lần sử dụng tối đa" value="1000">
+          <button class="btn btn-primary" onclick="addPromotion()">Thêm khuyến mãi</button>
+        </div>
+        <div id="promotionsTable"></div>
+      </div>
+
+      <div id="panel-snacks" class="admin-panel">
+        <h3>Quản lý đồ ăn vặt</h3>
+        <div class="admin-form">
+          <input id="snName" class="form-control" placeholder="Tên món">
+          <input id="snDesc" class="form-control" placeholder="Mô tả">
+          <input id="snPrice" class="form-control" type="number" placeholder="Giá">
+          <input id="snImage" class="form-control" placeholder="URL hình ảnh">
+          <select id="snCategory" class="form-control">
+            <option value="FOOD">FOOD</option>
+            <option value="DRINK">DRINK</option>
+            <option value="COMBO">COMBO</option>
+          </select>
+          <input id="snStock" class="form-control" type="number" placeholder="Tồn kho" value="0">
+          <select id="snAvailable" class="form-control">
+            <option value="true">Đang bán</option>
+            <option value="false">Tạm ngưng</option>
+          </select>
+          <button id="snackSubmitBtn" class="btn btn-primary" onclick="addSnack()">Thêm món</button>
+        </div>
+        <div id="snacksTable"></div>
+      </div>
+
+      <div id="panel-users" class="admin-panel">
+        <h3>Quản lý tài khoản</h3>
+        <div id="usersTable"></div>
+      </div>
+
+      <div id="panel-reports" class="admin-panel">
+        <h3>Báo cáo</h3>
+        <div>
+          <label>Từ ngày</label>
+          <input id="repFrom" type="date" class="form-control" style="max-width:200px;display:inline-block;margin:0 1rem">
+          <label>Đến ngày</label>
+          <input id="repTo" type="date" class="form-control" style="max-width:200px;display:inline-block;margin:0 1rem">
+          <button class="btn btn-primary" onclick="loadRevenue()">Xem doanh thu</button>
+        </div>
+        <div id="reportsContent" style="margin-top:1.5rem;color:#e5e5e5"></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/js/auth.js?v=4"></script>
+  <script src="/js/admin.js?v=4"></script>
+</body>
+</html>

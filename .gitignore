@@ -1,0 +1,25 @@
+bin/
+obj/
+venv/
+*.log
+*.exe
+wwwroot/lib/
+appsettings.Development.json
+appsettings.json
+
+# ── Python & RAG Service ──────────────────
+RagService/venv/
+RagService/.env
+RagService/__pycache__/
+RagService/chroma_db/
+RagService/*.pyc
+*.egg-info/
+
+# ── VS Code & IDE ─────────────────────────
+.vscode/
+pyrightconfig.json
+
+# ── OS ────────────────────────────────────
+.DS_Store
+Thumbs.db
+.idea/

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Đặt vé - Quốc Phim</title>
+  <link rel="stylesheet" href="/css/style.css?v=1">
+  <link rel="stylesheet" href="/css/booking-snacks.css?v=1">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="container">
+      <a href="/" class="navbar-brand">Quốc Phim</a>
+      <ul class="nav-links">
+        <li><a href="/">Trang chủ</a></li>
+        <li><a href="/pages/movies.html">Phim</a></li>
+        <li><a href="/pages/booking.html">Đặt vé</a></li>
+        <li><a href="/pages/my-bookings.html">Vé của tôi</a></li>
+        <li><a href="/pages/profile.html">Hồ sơ</a></li>
+        <li><a href="/pages/admin.html">Quản trị</a></li>
+        <li id="navAuth"></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="container section">
+    <h2>Đặt vé xem phim</h2>
+    <div id="guestNotice" style="display:none;padding:1rem;background:rgba(229,9,20,0.15);border-radius:8px;margin-bottom:1rem;color:#e5e5e5">
+      <strong>Đăng nhập để chọn ghế và đặt vé.</strong> Bạn vẫn có thể xem lịch chiếu.
+    </div>
+    <div class="booking-section">
+      <div class="booking-form">
+        <div class="form-group">
+          <label>Phim</label>
+          <select id="movieSelect" class="form-control"></select>
+        </div>
+        <div class="form-group">
+          <label>Rạp</label>
+          <select id="cinemaSelect" class="form-control"></select>
+        </div>
+        <div class="form-group">
+          <label>Ngày</label>
+          <input id="dateSelect" type="date" class="form-control">
+        </div>
+        <div class="form-group">
+          <label>Mã khuyến mãi</label>
+          <input id="promoCode" class="form-control" type="text" placeholder="Nhập mã giảm giá (nếu có)">
+        </div>
+        <div class="form-group" style="align-self:end">
+          <button class="btn btn-primary" onclick="loadShowtimes()">Xem suất chiếu</button>
+        </div>
+      </div>
+
+      <h3 style="color:rgb(243, 233, 233);margin:1rem 0">Suất chiếu</h3>
+      <div id="showtimesList" class="showtimes-list"></div>
+
+      <div style="margin-top:1.5rem">
+        <h3 style="color:rgb(243, 233, 233);margin:1rem 0 0.5rem">Đồ ăn vặt</h3>
+        <p style="color:#888;margin-bottom:0.75rem">Chọn món ăn kèm vé, số lượng sẽ được trừ khi đặt chỗ.</p>
+        <div class="snack-picker">
+          <div class="form-group">
+            <label>Chọn món</label>
+            <select id="snackSelect" class="form-control"></select>
+          </div>
+          <div class="form-group">
+            <label>Số lượng</label>
+            <input id="snackQty" type="number" min="1" value="1" class="form-control">
+          </div>
+          <div class="form-group" style="align-self:end">
+            <button type="button" class="btn btn-primary" onclick="addSelectedSnack()">Thêm món</button>
+          </div>
+        </div>
+        <div id="snacksList" class="snack-selected-list"></div>
+      </div>
+
+      <div id="seatsSection" style="display:none">
+        <div id="showtimeInfo" style="color:#16cd34;margin-bottom:1rem;font-size:0.95rem"></div>
+        <div class="screen-label">MÀN HÌNH</div>
+        <div id="seatsGrid" class="seats-grid"></div>
+        <div style="display:flex;gap:2rem;margin:1rem 0;font-size:0.9rem;color:#19c32c">
+          <span><span style="display:inline-block;width:20px;height:20px;background:#333;border:1px solid #666;border-radius:4px;vertical-align:middle;margin-right:0.5rem"></span> Trống</span>
+          <span><span style="display:inline-block;width:20px;height:20px;background:var(--primary);border-radius:4px;vertical-align:middle;margin-right:0.5rem"></span> Đã chọn</span>
+          <span><span style="display:inline-block;width:20px;height:20px;background:#fc7b02;cursor:not-allowed;border-radius:4px;vertical-align:middle;margin-right:0.5rem"></span> Đã đặt</span>
+        </div>
+        <div class="booking-summary">
+          <h4>Tổng tiền vé + đồ ăn: <span id="totalPrice">0 ₫</span></h4>
+          <button id="confirmBookingBtn" type="button" class="btn btn-success" onclick="confirmBooking()">Xác nhận đặt vé</button>
+          <p id="bookingFeedback" style="display:none;margin-top:0.75rem;font-size:0.95rem"></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="container"><p>© Quốc Phim</p></div>
+  </footer>
+
+  <script src="/js/auth.js"></script>
+  <script src="/js/booking.js"></script>
+</body>
+</html>
