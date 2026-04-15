@@ -24,7 +24,7 @@ public class JwtUtil
 
     private int GetExpirationMinutes()
     {
-        var expiration = _config.GetValue<int?>("Jwt:ExpirationMinutes") ?? 1440; // Default 24h
+        var expiration = _config.GetValue<int?>("Jwt:ExpirationMinutes") ?? 1440;
         return expiration;
     }
 

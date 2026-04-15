@@ -1,4 +1,5 @@
 bin/
+chroma_db/
 obj/
 venv/
 *.log
@@ -24,4 +25,3 @@ config/pyrightconfig.json
 Thumbs.db
 .idea/
 
-chroma_db/
