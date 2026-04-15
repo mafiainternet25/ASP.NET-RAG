@@ -5,6 +5,7 @@ using web.Data;
 using web.Models;
 using web.Security;
 using web.Services;
+using System.Diagnostics;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -101,5 +102,60 @@ app.MapFallback(async context =>
 
     context.Response.StatusCode = StatusCodes.Status404NotFound;
 });
+
+if (app.Environment.IsDevelopment())
+{
+    var ragServicePath = Path.Combine(app.Environment.ContentRootPath, "RagService", "rag_service.py");
+    var ragServiceDir = Path.Combine(app.Environment.ContentRootPath, "RagService");
+    if (File.Exists(ragServicePath))
+    {
+        var process = new Process
+        {
+            StartInfo = new ProcessStartInfo
+            {
+                FileName = "python",
+                Arguments = "rag_service.py",
+                WorkingDirectory = ragServiceDir,
+                UseShellExecute = false,
+                RedirectStandardOutput = true,
+                RedirectStandardError = true,
+                CreateNoWindow = true
+            }
+        };
+
+        process.OutputDataReceived += (sender, args) =>
+        {
+            if (!string.IsNullOrEmpty(args.Data))
+                Console.WriteLine($"[RAG Service] {args.Data}");
+        };
+
+        process.ErrorDataReceived += (sender, args) =>
+        {
+            if (!string.IsNullOrEmpty(args.Data))
+                Console.WriteLine($"[RAG Service ERROR] {args.Data}");
+        };
+
+        try
+        {
+            process.Start();
+            process.BeginOutputReadLine();
+            process.BeginErrorReadLine();
+            Console.WriteLine("✓ RAG Service started");
+
+            app.Lifetime.ApplicationStopping.Register(() =>
+            {
+                if (!process.HasExited)
+                {
+                    process.Kill();
+                    process.WaitForExit(5000);
+                }
+            });
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"✗ Failed to start RAG Service: {ex.Message}");
+        }
+    }
+}
 
 app.Run();
