@@ -4,7 +4,6 @@
 | # | Bảng | Mục đích |
   |---|------|----------|
   | 1 | `users` | Tài khoản đăng nhập của người dùng và admin |
-  | 2 | `auth_tokens` | Token xác thực (access + refresh) sau khi đăng nhập |
   | 3 | `movies` | Thông tin các bộ phim |
   | 4 | `cinemas` | Thông tin các rạp chiếu phim |
   | 5 | `rooms` | Phòng chiếu thuộc từng rạp |
@@ -37,30 +36,6 @@
 
 - `UNIQUE(username)` — không cho phép 2 tài khoản cùng username
 - `UNIQUE(email)` — không cho phép 2 tài khoản cùng email
-
----
-
-## 2. Bảng `auth_tokens` — Token xác thực
-
-> Mỗi lần user đăng nhập thành công, hệ thống tạo 1 bộ token gồm access token (dùng để gọi API) và refresh token (dùng để lấy access token mới khi hết hạn).
-
-| Cột                  | Kiểu               | Bắt buộc | Mặc định            | Giải thích                                                                |
-| -------------------- | ------------------ | -------- | ------------------- | ------------------------------------------------------------------------- |
-| `id`                 | INT AUTO_INCREMENT | ✅       | —                   | Khóa chính                                                                |
-| `user_id`            | INT                | ✅       | —                   | FK → `users.id`, token này thuộc về user nào                              |
-| `access_token`       | VARCHAR(200)       | ✅       | —                   | Token ngắn hạn dùng để xác thực mỗi request (thường 15 phút - 1 giờ)      |
-| `refresh_token`      | VARCHAR(200)       | ✅       | —                   | Token dài hạn dùng để cấp lại access token khi hết hạn (thường 7-30 ngày) |
-| `access_expires_at`  | DATETIME           | ✅       | —                   | Thời điểm access token hết hạn                                            |
-| `refresh_expires_at` | DATETIME           | ✅       | —                   | Thời điểm refresh token hết hạn                                           |
-| `created_at`         | DATETIME           | ✅       | `CURRENT_TIMESTAMP` | Thời điểm tạo token (= thời điểm đăng nhập)                               |
-
-**Ràng buộc:**
-
-- `UNIQUE(access_token)` — mỗi token là duy nhất
-- `UNIQUE(refresh_token)` — mỗi token là duy nhất
-- `FK(user_id) ON DELETE CASCADE` — xóa user thì xóa hết token của user đó
-
-**Lưu ý bảo mật:** Bảng này chứa thông tin nhạy cảm, không được đưa vào context AI chatbot.
 
 ---
 
