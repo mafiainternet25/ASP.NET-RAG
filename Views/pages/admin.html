@@ -11,6 +11,15 @@
     .admin-tab.active { background:var(--primary); color:white; }
     .admin-panel { display:none; }
     .admin-panel.active { display:block; }
+    .admin-panel h3 { padding:0.75rem 1rem; border-radius:6px; font-size:1.1rem; font-weight:600; }
+    #panel-movies h3 { background:linear-gradient(135deg, #0f0e0e 0%, #0f0e0e 100%); color:rgb(248, 2, 2); }
+    #panel-cinemas h3 { background:linear-gradient(135deg, #0f0e0e 0%, #0f0e0e 100%); color:rgb(248, 2, 2); }
+    #panel-rooms h3 { background:linear-gradient(135deg, #0f0e0e 0%, #0f0e0e 100%); color:rgb(248, 2, 2); }
+    #panel-showtimes h3 { background:linear-gradient(135deg, #0f0e0e 0%, #0f0e0e 100%); color:rgb(248, 2, 2); }
+    #panel-promotions h3 { background:linear-gradient(135deg, #0f0e0e 0%, #0f0e0e 100%); color:rgb(248, 2, 2); }
+    #panel-snacks h3 { background:linear-gradient(135deg, #0f0e0e 0%, #0f0e0e 100%); color:rgb(248, 2, 2); }
+    #panel-users h3 { background:linear-gradient(135deg, #0f0e0e 0%, #0f0e0e 100%); color:rgb(248, 2, 2); }
+    #panel-reports h3 { background:linear-gradient(135deg, #0f0e0e 0%, #0f0e0e 100%); color:rgb(248, 2, 2); }
     .admin-table { width:100%; border-collapse:collapse; margin-top:1rem; }
     .admin-table th, .admin-table td { padding:0.75rem; text-align:left; border-bottom:1px solid #333; color:#e5e5e5; }
     .admin-form { display:grid; gap:1rem; max-width:400px; margin-bottom:1.5rem; }
@@ -146,9 +155,9 @@
       <div id="panel-reports" class="admin-panel">
         <h3>Báo cáo</h3>
         <div>
-          <label>Từ ngày</label>
+          <label style="color:rgb(248, 2, 2)">Từ ngày</label>
           <input id="repFrom" type="date" class="form-control" style="max-width:200px;display:inline-block;margin:0 1rem">
-          <label>Đến ngày</label>
+          <label style="color:rgb(248, 2, 2)">Đến ngày</label>
           <input id="repTo" type="date" class="form-control" style="max-width:200px;display:inline-block;margin:0 1rem">
           <button class="btn btn-primary" onclick="loadRevenue()">Xem doanh thu</button>
         </div>

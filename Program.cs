@@ -22,6 +22,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
         .UseSnakeCaseNamingConvention());
 
 builder.Services.AddControllersWithViews();
+builder.Services.AddScoped<JwtUtil>();
 builder.Services.AddScoped<AuthSessionService>();
 builder.Services.AddScoped<CurrentUserResolver>();
 builder.Services.AddScoped<MovieService>();

@@ -9,22 +9,23 @@ Users can browse movies, book tickets, and manage their bookings.
 
 ## 🚀 Technologies
 
-* ASP.NET Core Web API
-* Entity Framework Core
-* MySQL
-* HTML, CSS, JavaScript
-* Call API Key Chatbot
+- ASP.NET Core Web API
+- Entity Framework Core
+- MySQL
+- JWT Login
+- HTML, CSS, JavaScript
+- Call API Key Chatbot
 
 ---
 
 ## 📂 Project Structure
 
-* Controllers/ – handle API requests
-* Models/ – data models
-* Services/ – business logic
-* Data/ – database context
-* Views/ – frontend pages
-* wwwroot/ – static files
+- Controllers/ – handle API requests
+- Models/ – data models
+- Services/ – business logic
+- Data/ – database context
+- Views/ – frontend pages
+- wwwroot/ – static files
 
 ---
 

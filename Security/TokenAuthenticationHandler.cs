@@ -28,7 +28,7 @@ public class TokenAuthenticationHandler : AuthenticationHandler<AuthenticationSc
             return AuthenticateResult.NoResult();
         }
 
-        var (user, _) = await _authSessionService.ValidateAccessAsync(header);
+        var user = await _authSessionService.ValidateAccessAsync(header);
         if (user == null)
         {
             return AuthenticateResult.Fail("Invalid or expired token");

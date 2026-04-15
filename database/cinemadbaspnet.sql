@@ -17,19 +17,6 @@ CREATE TABLE users (
     UNIQUE KEY uq_users_email (email)
 );
 
-CREATE TABLE auth_tokens (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT NOT NULL,
-    access_token VARCHAR(200) NOT NULL,
-    refresh_token VARCHAR(200) NOT NULL,
-    access_expires_at DATETIME NOT NULL,
-    refresh_expires_at DATETIME NOT NULL,
-    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    UNIQUE KEY uq_auth_access (access_token),
-    UNIQUE KEY uq_auth_refresh (refresh_token),
-    CONSTRAINT fk_auth_user FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
-);
-
 CREATE TABLE movies (
     id INT AUTO_INCREMENT PRIMARY KEY,
     title VARCHAR(180) NOT NULL,

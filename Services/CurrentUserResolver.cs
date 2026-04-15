@@ -29,7 +29,7 @@ public class CurrentUserResolver
         }
 
         var header = httpContext.Request.Headers.Authorization.ToString();
-        var (user, _) = await _auth.ValidateAccessAsync(header);
+        var user = await _auth.ValidateAccessAsync(header);
         return user;
     }
 }

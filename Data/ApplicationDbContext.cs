@@ -10,7 +10,6 @@ public class ApplicationDbContext : DbContext
     }
 
     public DbSet<User> Users => Set<User>();
-    public DbSet<AuthToken> AuthTokens => Set<AuthToken>();
     public DbSet<Movie> Movies => Set<Movie>();
     public DbSet<Cinema> Cinemas => Set<Cinema>();
     public DbSet<Room> Rooms => Set<Room>();
@@ -29,8 +28,6 @@ public class ApplicationDbContext : DbContext
 
         modelBuilder.Entity<User>().HasIndex(x => x.Username).IsUnique();
         modelBuilder.Entity<User>().HasIndex(x => x.Email).IsUnique();
-        modelBuilder.Entity<AuthToken>().HasIndex(x => x.AccessToken).IsUnique();
-        modelBuilder.Entity<AuthToken>().HasIndex(x => x.RefreshToken).IsUnique();
         modelBuilder.Entity<Promotion>().HasIndex(x => x.Code).IsUnique();
         modelBuilder.Entity<Booking>().HasIndex(x => x.BookingCode).IsUnique();
 
