@@ -1,5 +1,4 @@
 bin/
-chroma_db/
 obj/
 venv/
 *.log
