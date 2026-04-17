@@ -1,26 +1,6 @@
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Chi tiết phim - Quốc Phim</title>
-  <link rel="stylesheet" href="/css/style.css">
-</head>
-<body>
-  <nav class="navbar">
-    <div class="container">
-      <a href="/" class="navbar-brand">Quốc Phim</a>
-      <ul class="nav-links">
-        <li><a href="/">Trang chủ</a></li>
-        <li><a href="/pages/movies.html">Phim</a></li>
-        <li><a href="/pages/booking.html">Đặt vé</a></li>
-        <li><a href="/pages/my-bookings.html">Vé của tôi</a></li>
-        <li><a href="/pages/profile.html">Hồ sơ</a></li>
-        <li><a href="/pages/admin.html">Quản trị</a></li>
-        <li id="navAuth"></li>
-      </ul>
-    </div>
-  </nav>
+@{
+  ViewData["Title"] = "Chi tiết phim - Quốc Phim";
+}
 
   <div class="container section">
     <div id="movieDetail" class="movie-detail"></div>
@@ -47,7 +27,7 @@
       <div id="reviewsList" class="reviews-list"></div>
       <div id="reviewLoginPrompt" style="display:none;margin-top:2rem;padding:1rem;background:rgba(229,9,20,0.1);border-radius:8px">
       <p style="color:#e5e5e5;margin-bottom:0.5rem">Đăng nhập để đánh giá phim</p>
-      <a href="/login.html?redirect=%2Fpages%2Fmovie-detail.html%3Fid%3D" id="reviewLoginLink" class="btn btn-primary">Đăng nhập</a>
+      <a href="/login?redirect=%2Fpages%2Fmovie-detail%3Fid%3D" id="reviewLoginLink" class="btn btn-primary">Đăng nhập</a>
     </div>
     <div id="addReviewForm" style="display:none;margin-top:2rem">
         <div class="auth-box" style="max-width:500px">
@@ -73,11 +53,7 @@
     </div>
   </div>
 
-  <footer>
-    <div class="container"><p>© Quốc Phim</p></div>
-  </footer>
-
+@section Scripts {
   <script src="/js/auth.js"></script>
   <script src="/js/movie-detail.js"></script>
-</body>
-</html>
+}

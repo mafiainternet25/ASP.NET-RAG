@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>@(ViewData["Title"] ?? "Quốc Phim")</title>
+  <link rel="stylesheet" href="/css/style.css">
+  @await RenderSectionAsync("Styles", required: false)
+</head>
+<body>
+  @await Html.PartialAsync("_Navbar")
+
+  @RenderBody()
+
+  @await Html.PartialAsync("_Footer")
+
+  @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

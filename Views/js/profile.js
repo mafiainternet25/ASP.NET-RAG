@@ -4,21 +4,21 @@ function renderNavAuth() {
   const el = document.getElementById('navAuth');
   if (!el) return;
   if (typeof AUTH !== 'undefined' && AUTH.isLoggedIn()) {
-    el.innerHTML = '<button class="btn-logout" onclick="AUTH.clear();location.href=\'/login.html\'">Đăng xuất</button>';
+    el.innerHTML = '<button class="btn-logout" onclick="AUTH.clear();location.href=\'/login\'">Đăng xuất</button>';
   } else {
-    el.innerHTML = '<a href="/login.html?redirect=' + encodeURIComponent(location.pathname) + '" class="btn-login">Đăng nhập</a>';
+    el.innerHTML = '<a href="/login?redirect=' + encodeURIComponent(location.pathname) + '" class="btn-login">Đăng nhập</a>';
   }
 }
 
 async function loadProfile() {
   if (!AUTH.isLoggedIn()) {
-    location.href = '/login.html?redirect=' + encodeURIComponent(location.href);
+    location.href = '/login?redirect=' + encodeURIComponent(location.href);
     return;
   }
   const res = await AUTH.fetchWithAuth(`${API}/users/me`);
   if (!res.ok) {
     if (res.status === 401) {
-      location.href = '/login.html?redirect=' + encodeURIComponent(location.href);
+      location.href = '/login?redirect=' + encodeURIComponent(location.href);
       return;
     }
     showError('Không tải được thông tin');
@@ -47,7 +47,7 @@ function hideError() {
 document.addEventListener('DOMContentLoaded', () => {
   renderNavAuth();
   if (!AUTH.isLoggedIn()) {
-    location.href = '/login.html?redirect=' + encodeURIComponent(location.pathname);
+    location.href = '/login?redirect=' + encodeURIComponent(location.pathname);
     return;
   }
   loadProfile();

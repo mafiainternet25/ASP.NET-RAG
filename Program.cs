@@ -74,11 +74,6 @@ var viewsPath = Path.Combine(app.Environment.ContentRootPath, "Views");
 if (Directory.Exists(viewsPath))
 {
     var provider = new PhysicalFileProvider(viewsPath);
-    app.UseDefaultFiles(new DefaultFilesOptions
-    {
-        FileProvider = provider,
-        DefaultFileNames = { "index.html" }
-    });
     app.UseStaticFiles(new StaticFileOptions
     {
         FileProvider = provider,
@@ -90,54 +85,56 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Pages}/{action=Index}/{id?}");
 
-app.MapFallback(async context =>
+app.MapFallbackToController("Index", "Pages");
+
+// RAG Service initialization - DISABLED by default to prevent startup crashes
+// Set RAG_SERVICE_ENABLED=true in environment to enable
+bool enableRagService = builder.Configuration.GetValue<bool>("RAG_SERVICE_ENABLED", false);
+
+if (app.Environment.IsDevelopment() && enableRagService)
 {
-    var indexPath = Path.Combine(app.Environment.ContentRootPath, "Views", "index.html");
-    if (File.Exists(indexPath))
+    try
     {
-        context.Response.ContentType = "text/html; charset=utf-8";
-        await context.Response.SendFileAsync(indexPath);
-        return;
-    }
-
-    context.Response.StatusCode = StatusCodes.Status404NotFound;
-});
-
-if (app.Environment.IsDevelopment())
-{
-    var ragServicePath = Path.Combine(app.Environment.ContentRootPath, "RagService", "rag_service.py");
-    var ragServiceDir = Path.Combine(app.Environment.ContentRootPath, "RagService");
-    if (File.Exists(ragServicePath))
-    {
-        var process = new Process
+        var ragServicePath = Path.Combine(app.Environment.ContentRootPath, "RagService", "rag_service.py");
+        var ragServiceDir = Path.Combine(app.Environment.ContentRootPath, "RagService");
+        if (File.Exists(ragServicePath))
         {
-            StartInfo = new ProcessStartInfo
+            var process = new Process
             {
-                FileName = "python",
-                Arguments = "rag_service.py",
-                WorkingDirectory = ragServiceDir,
-                UseShellExecute = false,
-                RedirectStandardOutput = true,
-                RedirectStandardError = true,
-                CreateNoWindow = true
-            }
-        };
+                StartInfo = new ProcessStartInfo
+                {
+                    FileName = "python3",
+                    Arguments = "rag_service.py",
+                    WorkingDirectory = ragServiceDir,
+                    UseShellExecute = false,
+                    RedirectStandardOutput = true,
+                    RedirectStandardError = true,
+                    CreateNoWindow = true
+                }
+            };
 
-        process.OutputDataReceived += (sender, args) =>
-        {
-            if (!string.IsNullOrEmpty(args.Data))
-                Console.WriteLine($"[RAG Service] {args.Data}");
-        };
+            process.OutputDataReceived += (sender, args) =>
+            {
+                if (!string.IsNullOrEmpty(args.Data))
+                    Console.WriteLine($"[RAG Service] {args.Data}");
+            };
 
-        process.ErrorDataReceived += (sender, args) =>
-        {
-            if (!string.IsNullOrEmpty(args.Data))
-                Console.WriteLine($"[RAG Service ERROR] {args.Data}");
-        };
+            process.ErrorDataReceived += (sender, args) =>
+            {
+                if (!string.IsNullOrEmpty(args.Data))
+                    Console.WriteLine($"[RAG Service ERROR] {args.Data}");
+            };
 
-        try
-        {
+            process.EnableRaisingEvents = true;
+            process.Exited += (sender, args) =>
+            {
+                Console.WriteLine($"⚠ RAG Service exited with code {process.ExitCode}");
+            };
+
             process.Start();
             process.BeginOutputReadLine();
             process.BeginErrorReadLine();
@@ -145,18 +142,34 @@ if (app.Environment.IsDevelopment())
 
             app.Lifetime.ApplicationStopping.Register(() =>
             {
-                if (!process.HasExited)
+                try
                 {
-                    process.Kill();
-                    process.WaitForExit(5000);
+                    if (!process.HasExited)
+                    {
+                        process.Kill();
+                        process.WaitForExit(5000);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"⚠ Error stopping RAG Service: {ex.Message}");
                 }
             });
         }
-        catch (Exception ex)
+        else
         {
-            Console.WriteLine($"✗ Failed to start RAG Service: {ex.Message}");
+            Console.WriteLine($"⚠ RAG Service not found at {ragServicePath}");
         }
     }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"✗ Failed to start RAG Service: {ex.Message}");
+        Console.WriteLine($"  Stack trace: {ex.StackTrace}");
+    }
+}
+else if (app.Environment.IsDevelopment())
+{
+    Console.WriteLine("ℹ RAG Service disabled. To enable, set RAG_SERVICE_ENABLED=true");
 }
 
 app.Run();

@@ -6,7 +6,7 @@ function renderNavAuth() {
   if (typeof AUTH !== 'undefined' && AUTH.isLoggedIn()) {
     el.innerHTML = '<button class="btn-logout" onclick="AUTH.clear();location.reload()">Đăng xuất</button>';
   } else {
-    el.innerHTML = '<a href="/login.html" class="btn-login">Đăng nhập</a>';
+    el.innerHTML = '<a href="/login" class="btn-login">Đăng nhập</a>';
   }
 }
 
@@ -35,7 +35,7 @@ async function loadMovie() {
       </div>
       <p style="color:#ccc;margin:1rem 0">${m.description || ''}</p>
       <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-top:1rem">
-        <a href="/pages/booking.html?movieId=${m.id}" class="btn btn-primary">Đặt vé ngay</a>
+        <a href="/pages/booking?movieId=${m.id}" class="btn btn-primary">Đặt vé ngay</a>
         ${m.trailerUrl ? `<a href="${m.trailerUrl}" target="_blank" rel="noopener" class="btn btn-outline">Xem trailer</a>` : ''}
       </div>
     </div>
@@ -54,7 +54,7 @@ async function loadMovie() {
     if (addForm) addForm.style.display = 'none';
     if (loginPrompt) {
       loginPrompt.style.display = 'block';
-      if (loginLink) loginLink.href = '/login.html?redirect=' + encodeURIComponent(location.href);
+      if (loginLink) loginLink.href = '/login?redirect=' + encodeURIComponent(location.href);
     }
   }
 }
@@ -112,7 +112,7 @@ async function loadShowtimesSection(movieId) {
       const d = new Date(s.startTime);
       const roomName = s.roomName || 'Phòng';
       const cinemaName = s.cinemaName || '';
-      const bookingUrl = `/pages/booking.html?movieId=${movieId}&date=${date}`;
+      const bookingUrl = `/pages/booking?movieId=${movieId}&date=${date}`;
       return `
         <div class="showtime-item" style="padding:1rem;background:#1f1f1f;border-radius:8px">
           <div style="font-weight:600;color:white">${d.toLocaleTimeString('vi-VN', {hour:'2-digit',minute:'2-digit'})}</div>

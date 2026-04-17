@@ -1,0 +1,17 @@
+@{
+    var brandText = ViewData["NavbarBrand"]?.ToString() ?? "Quốc Phim";
+}
+<nav class="navbar">
+  <div class="container">
+    <a href="/" class="navbar-brand">@brandText</a>
+    <ul class="nav-links">
+      <li><a href="/">Trang chủ</a></li>
+      <li><a href="/pages/movies">Phim</a></li>
+      <li><a href="/pages/booking">Đặt vé</a></li>
+      <li><a href="/pages/my-bookings">Vé của tôi</a></li>
+      <li><a href="/pages/profile">Hồ sơ</a></li>
+      <li><a href="/pages/admin">Quản trị</a></li>
+      <li id="navAuth"></li>
+    </ul>
+  </div>
+</nav>

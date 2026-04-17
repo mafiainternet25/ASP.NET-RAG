@@ -17,7 +17,7 @@ function renderNavAuth() {
   if (typeof AUTH !== 'undefined' && AUTH.isLoggedIn()) {
     el.innerHTML = '<button class="btn-logout" onclick="AUTH.clear();location.href=\'/\'">Đăng xuất</button>';
   } else {
-    el.innerHTML = '<a href="/login.html" class="btn-login">Đăng nhập</a>';
+    el.innerHTML = '<a href="/login" class="btn-login">Đăng nhập</a>';
   }
 }
 
@@ -29,7 +29,7 @@ async function fetchAdmin(url, opts = {}) {
 
 async function initAdmin() {
   if (!AUTH.isLoggedIn()) {
-    location.href = '/login.html?redirect=' + encodeURIComponent(location.href);
+    location.href = '/login?redirect=' + encodeURIComponent(location.href);
     return;
   }
   try {

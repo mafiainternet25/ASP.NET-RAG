@@ -1,10 +1,9 @@
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Quản trị - Quốc Phim</title>
-  <link rel="stylesheet" href="/css/style.css">
+@{
+  ViewData["Title"] = "Quản trị - Quốc Phim";
+  ViewData["NavbarBrand"] = "Quốc Phim - Admin";
+}
+
+@section Styles {
   <style>
     .admin-tabs { display:flex; gap:0.5rem; flex-wrap:wrap; margin-bottom:1.5rem; }
     .admin-tab { padding:0.5rem 1rem; background:#333; color:#ccc; border:none; cursor:pointer; border-radius:6px; }
@@ -26,18 +25,7 @@
     .form-row { display:flex; gap:0.5rem; align-items:flex-end; }
     .form-row .form-control { flex:1; }
   </style>
-</head>
-<body>
-  <nav class="navbar">
-    <div class="container">
-      <a href="/" class="navbar-brand">Quốc Phim - Admin</a>
-      <ul class="nav-links">
-        <li><a href="/">Trang chủ</a></li>
-        <li><a href="/pages/admin.html">Quản trị</a></li>
-        <li id="navAuth"></li>
-      </ul>
-    </div>
-  </nav>
+}
 
   <div class="container section">
     <div id="adminDenied" style="display:none;padding:2rem;text-align:center">
@@ -166,7 +154,7 @@
     </div>
   </div>
 
+@section Scripts {
   <script src="/js/auth.js?v=4"></script>
   <script src="/js/admin.js?v=4"></script>
-</body>
-</html>
+}

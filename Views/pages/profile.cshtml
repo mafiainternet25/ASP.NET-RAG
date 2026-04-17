@@ -1,25 +1,6 @@
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Hồ sơ - Quốc Phim</title>
-  <link rel="stylesheet" href="/css/style.css">
-</head>
-<body>
-  <nav class="navbar">
-    <div class="container">
-      <a href="/" class="navbar-brand">Quốc Phim</a>
-      <ul class="nav-links">
-        <li><a href="/">Trang chủ</a></li>
-        <li><a href="/pages/movies.html">Phim</a></li>
-        <li><a href="/pages/booking.html">Đặt vé</a></li>
-        <li><a href="/pages/my-bookings.html">Vé của tôi</a></li>
-        <li><a href="/pages/profile.html">Hồ sơ</a></li>
-        <li id="navAuth"></li>
-      </ul>
-    </div>
-  </nav>
+@{
+  ViewData["Title"] = "Hồ sơ - Quốc Phim";
+}
 
   <div class="container section">
     <h2>Quản lý hồ sơ</h2>
@@ -61,7 +42,7 @@
     </div>
   </div>
 
+@section Scripts {
   <script src="/js/auth.js"></script>
   <script src="/js/profile.js"></script>
-</body>
-</html>
+}

@@ -30,7 +30,7 @@ function renderNavAuth() {
   if (typeof AUTH !== 'undefined' && AUTH.isLoggedIn()) {
     el.innerHTML = '<button class="btn-logout" onclick="AUTH.clear();location.reload()">Đăng xuất</button>';
   } else {
-    el.innerHTML = '<a href="/login.html" class="btn-login">Đăng nhập</a>';
+    el.innerHTML = '<a href="/login" class="btn-login">Đăng nhập</a>';
   }
   const notice = document.getElementById('guestNotice');
   if (notice) notice.style.display = AUTH.isLoggedIn() ? 'none' : 'block';
@@ -217,7 +217,7 @@ function selectShowtime(id, el) {
   clearBookingFeedback();
   if (!AUTH.isLoggedIn()) {
     if (confirm('Bạn cần đăng nhập để chọn ghế. Đi đến trang đăng nhập?')) {
-      location.href = '/login.html?redirect=' + encodeURIComponent(location.href);
+      location.href = '/login?redirect=' + encodeURIComponent(location.href);
     }
     return;
   }
@@ -331,14 +331,14 @@ async function confirmBooking() {
         return;
       }
       showBookingFeedback('Dat ve thanh cong, dang chuyen sang trang thanh toan...', 'success');
-      window.location.href = `/pages/payment.html?code=${encodeURIComponent(data.bookingCode)}`;
+      window.location.href = `/pages/payment?code=${encodeURIComponent(data.bookingCode)}`;
       return;
     }
 
     if (res.status === 401 || res.status === 403) {
       AUTH.clear();
       alert('Vui lòng đăng nhập lại để đặt vé');
-      location.href = '/login.html?redirect=' + encodeURIComponent(location.href);
+      location.href = '/login?redirect=' + encodeURIComponent(location.href);
       return;
     }
 

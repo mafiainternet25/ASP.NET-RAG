@@ -7,7 +7,7 @@ function renderNavAuth() {
   if (AUTH.isLoggedIn()) {
     el.innerHTML = '<button class="btn-logout" onclick="logout()">Đăng xuất</button>';
   } else {
-    el.innerHTML = '<a href="/login.html" class="btn-login">Đăng nhập</a>';
+    el.innerHTML = '<a href="/login" class="btn-login">Đăng nhập</a>';
   }
 }
 
@@ -44,17 +44,17 @@ async function loadNowPlaying() {
 function movieCardHtml(m) {
   return `
     <div class="movie-card">
-      <a href="/pages/movie-detail.html?id=${m.id}">
+      <a href="/pages/movie-detail?id=${m.id}">
         <img src="${m.posterUrl || 'https://via.placeholder.com/250x350?text=No+Image'}" alt="${m.title}" class="movie-poster">
       </a>
       <div class="movie-info">
-        <a href="/pages/movie-detail.html?id=${m.id}" style="text-decoration:none;color:inherit">
+        <a href="/pages/movie-detail?id=${m.id}" style="text-decoration:none;color:inherit">
           <div class="movie-title">${m.title}</div>
         </a>
         <div class="movie-genre">${m.genre || 'N/A'}</div>
         <div class="movie-rating">⭐ ${m.rating != null ? m.rating : 'N/A'}</div>
         <p style="font-size:0.85rem;color:#888;margin-top:0.5rem">${m.durationMin || 0} phút</p>
-        <a href="/pages/booking.html?movieId=${m.id}" class="btn btn-primary" style="width:100%;margin-top:0.5rem;text-align:center;display:block">Đặt vé</a>
+        <a href="/pages/booking?movieId=${m.id}" class="btn btn-primary" style="width:100%;margin-top:0.5rem;text-align:center;display:block">Đặt vé</a>
       </div>
     </div>
   `;

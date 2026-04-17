@@ -1,32 +1,13 @@
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Quốc Phim - Đặt vé xem phim</title>
-  <link rel="stylesheet" href="/css/style.css">
-</head>
-<body>
-  <nav class="navbar">
-    <div class="container">
-      <a href="/" class="navbar-brand">Quốc Phim</a>
-      <ul class="nav-links">
-        <li><a href="/">Trang chủ</a></li>
-        <li><a href="/pages/movies.html">Phim</a></li>
-        <!-- <li><a href="/pages/booking.html">Đặt vé</a></li> -->
-        <li><a href="/pages/my-bookings.html">Vé của tôi</a></li>
-        <li><a href="/pages/profile.html">Hồ sơ</a></li>
-        <li><a href="/pages/admin.html">Quản trị</a></li>
-        <li id="navAuth"></li>
-      </ul>
-    </div>
-  </nav>
+@{
+  ViewData["Title"] = "Quốc Phim - Đặt vé xem phim";
+  ViewData["FooterText"] = "© Quốc Phim - Rạp chiếu phim";
+}
 
   <section class="hero-section">
     <div class="container">
       <h1>Đặt vé xem phim nhanh chóng</h1>
       <p>Chọn phim, suất chiếu, ghế ngồi và thanh toán trực tuyến</p>
-      <a class="btn btn-primary" href="/pages/booking.html">Đặt vé ngay</a>
+      <a class="btn btn-primary" href="/pages/booking">Đặt vé ngay</a>
     </div>
   </section>
 
@@ -38,12 +19,6 @@
       <div id="comingSoonMovies" class="movies-grid"></div>
     </div>
   </section>
-
-  <footer>
-    <div class="container">
-      <p>© Quốc Phim - Rạp chiếu phim</p>
-    </div>
-  </footer>
 
   <button id="chatToggleBtn" class="chat-toggle-btn" type="button" aria-label="Mở chat AI">Chat AI</button>
 
@@ -70,7 +45,7 @@
     </form>
   </section>
 
+@section Scripts {
   <script src="/js/auth.js"></script>
   <script src="/js/main.js"></script>
-</body>
-</html>
+}

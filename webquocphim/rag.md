@@ -1,8 +1,3 @@
-# 🤖 Hướng dẫn RAG Chatbot - Cinema Booking (ASP.NET MVC + Python RAG Service)
-
-> Nâng cấp ChatbotService từ SQL keyword matching sang RAG thật sự.
-> Kiến trúc: ASP.NET MVC gọi HTTP sang Python FastAPI (ChromaDB + SentenceTransformer + Groq).
-
 ---
 
 ## 🏗️ Kiến trúc tổng quan
@@ -592,15 +587,15 @@ curl -X POST http://localhost:8001/chat \
 
 ## 🐛 Lỗi thường gặp & cách fix
 
-| Lỗi | Nguyên nhân | Fix |
-|-----|-------------|-----|
-| `Connection refused localhost:8001` | Python service chưa chạy | `uvicorn rag_service:app --port 8001` |
-| `{"detail":"...mysql..."}` khi `/ingest` | Sai DB_CONFIG | Kiểm tra host/user/password trong `ingestor.py` |
-| `total_documents: 0` | DB trống hoặc lỗi query | Chạy `SELECT COUNT(*) FROM movies` kiểm tra |
-| Model download chậm | Lần đầu tải SentenceTransformer | Chờ ~200MB download, lần sau chạy nhanh |
-| `GROQ_API_KEY not set` | Thiếu env var | `export GROQ_API_KEY=gsk_xxx` trước khi chạy |
-| RAG trả lời sai | Chunk không liên quan | Tăng `top_k=6`, kiểm tra text trong `ingestor.py` |
-| ASP.NET timeout | Python xử lý chậm | Tăng `client.Timeout = TimeSpan.FromSeconds(30)` |
+| Lỗi                                      | Nguyên nhân                     | Fix                                               |
+| ---------------------------------------- | ------------------------------- | ------------------------------------------------- |
+| `Connection refused localhost:8001`      | Python service chưa chạy        | `uvicorn rag_service:app --port 8001`             |
+| `{"detail":"...mysql..."}` khi `/ingest` | Sai DB_CONFIG                   | Kiểm tra host/user/password trong `ingestor.py`   |
+| `total_documents: 0`                     | DB trống hoặc lỗi query         | Chạy `SELECT COUNT(*) FROM movies` kiểm tra       |
+| Model download chậm                      | Lần đầu tải SentenceTransformer | Chờ ~200MB download, lần sau chạy nhanh           |
+| `GROQ_API_KEY not set`                   | Thiếu env var                   | `export GROQ_API_KEY=gsk_xxx` trước khi chạy      |
+| RAG trả lời sai                          | Chunk không liên quan           | Tăng `top_k=6`, kiểm tra text trong `ingestor.py` |
+| ASP.NET timeout                          | Python xử lý chậm               | Tăng `client.Timeout = TimeSpan.FromSeconds(30)`  |
 
 ---
 

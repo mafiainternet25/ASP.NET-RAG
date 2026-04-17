@@ -1,0 +1,20 @@
+@{
+  ViewData["Title"] = "Thanh toán - Quốc Phim";
+}
+
+  <div class="container section">
+    <div id="paymentContent" class="payment-box">
+      <h2 style="color:white;margin-bottom:1rem">Thanh toán</h2>
+      <p id="bookingInfo" style="color:#888;margin-bottom:1rem"></p>
+      <p id="totalAmount" style="font-size:1.5rem;font-weight:700;color:var(--primary);margin-bottom:1.5rem"></p>
+      <div style="display:flex;gap:0.5rem;flex-wrap:wrap">
+        <button id="btnPay" class="btn btn-primary" style="flex:1;min-width:150px">Thanh toán</button>
+      </div>
+      <a href="/pages/my-bookings" class="btn btn-outline" style="display:block;text-align:center;margin-top:1rem">Quay lại vé của tôi</a>
+    </div>
+  </div>
+
+@section Scripts {
+  <script src="/js/auth.js"></script>
+  <script src="/js/payment.js"></script>
+}

@@ -1,0 +1,17 @@
+@{
+  ViewData["Title"] = "Vé của tôi - Quốc Phim";
+}
+
+  <div class="container section">
+    <h2>Lịch sử đặt vé</h2>
+    <div id="loginPrompt" style="display:none;padding:2rem;background:var(--dark-light);border-radius:12px;text-align:center">
+      <p style="color:#888;margin-bottom:1rem">Vui lòng đăng nhập để xem vé của bạn</p>
+      <a class="btn btn-primary" id="loginLink" href="/login">Đăng nhập</a>
+    </div>
+    <div id="bookingsList"></div>
+  </div>
+
+@section Scripts {
+  <script src="/js/auth.js"></script>
+  <script src="/js/my-bookings.js"></script>
+}

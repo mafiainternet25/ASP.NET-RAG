@@ -10,7 +10,7 @@ function renderNavAuth() {
   if (typeof AUTH !== 'undefined' && AUTH.isLoggedIn()) {
     el.innerHTML = '<button class="btn-logout" onclick="AUTH.clear();location.reload()">Đăng xuất</button>';
   } else {
-    el.innerHTML = '<a href="/login.html" class="btn-login">Đăng nhập</a>';
+    el.innerHTML = '<a href="/login" class="btn-login">Đăng nhập</a>';
   }
 }
 
@@ -20,11 +20,11 @@ async function displayMovies(movies, meta) {
   const list = Array.isArray(movies) ? movies : (movies?.content || []);
   grid.innerHTML = list.map(m => `
     <div class="movie-card">
-      <a href="/pages/movie-detail.html?id=${m.id}">
+      <a href="/pages/movie-detail?id=${m.id}">
         <img src="${m.posterUrl || 'https://via.placeholder.com/250x350?text=No+Image'}" alt="${m.title}" class="movie-poster">
       </a>
       <div class="movie-info">
-        <a href="/pages/movie-detail.html?id=${m.id}" style="text-decoration:none;color:inherit">
+        <a href="/pages/movie-detail?id=${m.id}" style="text-decoration:none;color:inherit">
           <div class="movie-title">${m.title}</div>
         </a>
         <div class="movie-genre">${m.genre || 'N/A'}</div>
@@ -33,7 +33,7 @@ async function displayMovies(movies, meta) {
         <div id="showtimes-${m.id}" style="font-size:0.85rem;color:#e50914;margin-top:0.5rem;min-height:1.5rem">
           <span style="color:#aaa">Đang tải suất chiếu...</span>
         </div>
-        <a href="/pages/booking.html?movieId=${m.id}" class="btn btn-primary" style="width:100%;margin-top:0.5rem;text-align:center;display:block">Đặt vé</a>
+        <a href="/pages/booking?movieId=${m.id}" class="btn btn-primary" style="width:100%;margin-top:0.5rem;text-align:center;display:block">Đặt vé</a>
       </div>
     </div>
   `).join('');

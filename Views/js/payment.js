@@ -7,7 +7,7 @@ function renderNavAuth() {
   if (typeof AUTH !== 'undefined' && AUTH.isLoggedIn()) {
     el.innerHTML = '<button class="btn-logout" onclick="AUTH.clear();location.reload()">Đăng xuất</button>';
   } else {
-    el.innerHTML = '<a href="/login.html" class="btn-login">Đăng nhập</a>';
+    el.innerHTML = '<a href="/login" class="btn-login">Đăng nhập</a>';
   }
 }
 
@@ -36,7 +36,7 @@ async function loadPayment() {
   const payment_Status = new URLSearchParams(location.search).get('vnp_ResponseCode'); // Callback từ VNPay
   
   if (!code) {
-    document.getElementById('paymentContent').innerHTML = '<p style="color:#888">Không tìm thấy đơn đặt vé. <a href="/pages/my-bookings.html">Vé của tôi</a></p>';
+    document.getElementById('paymentContent').innerHTML = '<p style="color:#888">Không tìm thấy đơn đặt vé. <a href="/pages/my-bookings">Vé của tôi</a></p>';
     return;
   }
 
@@ -44,11 +44,11 @@ async function loadPayment() {
   const res = await AUTH.fetchWithAuth(`${API}/bookings/${encodeURIComponent(code)}`);
   if (!res.ok) {
     if (res.status === 401 || res.status === 403) {
-      document.getElementById('paymentContent').innerHTML = '<p style="color:#ef4444">Vui lòng đăng nhập để thanh toán.</p><a class="btn btn-primary" href="/login.html?redirect=' + encodeURIComponent(location.href) + '">Đăng nhập</a>';
+      document.getElementById('paymentContent').innerHTML = '<p style="color:#ef4444">Vui lòng đăng nhập để thanh toán.</p><a class="btn btn-primary" href="/login?redirect=' + encodeURIComponent(location.href) + '">Đăng nhập</a>';
     } else if (res.status === 404) {
-      document.getElementById('paymentContent').innerHTML = '<p style="color:#888">Đơn không tồn tại. <a href="/pages/my-bookings.html">Vé của tôi</a></p>';
+      document.getElementById('paymentContent').innerHTML = '<p style="color:#888">Đơn không tồn tại. <a href="/pages/my-bookings">Vé của tôi</a></p>';
     } else {
-      document.getElementById('paymentContent').innerHTML = '<p style="color:#ef4444">Có lỗi xảy ra. <a href="/pages/my-bookings.html">Quay lại</a></p>';
+      document.getElementById('paymentContent').innerHTML = '<p style="color:#ef4444">Có lỗi xảy ra. <a href="/pages/my-bookings">Quay lại</a></p>';
     }
     return;
   }
@@ -71,7 +71,7 @@ async function loadPayment() {
     // Thanh toán thành công, confirm booking
     const confirmed = await confirmBookingAfterPayment();
     if (confirmed) {
-      document.getElementById('paymentContent').innerHTML = '<div style="padding:2rem;text-align:center;background:rgba(16,185,129,0.1);border-radius:8px;border:2px solid #10b981"><p style="color:#10b981;font-size:1.2rem;font-weight:600">✓ Thanh toán thành công!</p><p style="color:#888;margin-top:0.5rem">Đơn đặt vé của bạn đã được xác nhận.</p><p style="margin-top:1rem"><a class="btn btn-primary" href="/pages/my-bookings.html">Xem vé của tôi</a></p></div>';
+      document.getElementById('paymentContent').innerHTML = '<div style="padding:2rem;text-align:center;background:rgba(16,185,129,0.1);border-radius:8px;border:2px solid #10b981"><p style="color:#10b981;font-size:1.2rem;font-weight:600">✓ Thanh toán thành công!</p><p style="color:#888;margin-top:0.5rem">Đơn đặt vé của bạn đã được xác nhận.</p><p style="margin-top:1rem"><a class="btn btn-primary" href="/pages/my-bookings">Xem vé của tôi</a></p></div>';
       const btn = document.getElementById('btnPay');
       if (btn) btn.style.display = 'none';
       return;
@@ -110,7 +110,7 @@ async function loadPayment() {
         
         if (res.ok && data.success === 'true') {
           // Thanh toán thành công, cập nhật UI
-          document.getElementById('paymentContent').innerHTML = '<div style="padding:2rem;text-align:center;background:rgba(16,185,129,0.1);border-radius:8px;border:2px solid #10b981"><p style="color:#10b981;font-size:1.2rem;font-weight:600">✓ Thanh toán thành công!</p><p style="color:#888;margin-top:0.5rem">Đơn đặt vé của bạn đã được xác nhận.</p><p style="margin-top:1rem"><a class="btn btn-primary" href="/pages/my-bookings.html">Xem vé của tôi</a></p></div>';
+          document.getElementById('paymentContent').innerHTML = '<div style="padding:2rem;text-align:center;background:rgba(16,185,129,0.1);border-radius:8px;border:2px solid #10b981"><p style="color:#10b981;font-size:1.2rem;font-weight:600">✓ Thanh toán thành công!</p><p style="color:#888;margin-top:0.5rem">Đơn đặt vé của bạn đã được xác nhận.</p><p style="margin-top:1rem"><a class="btn btn-primary" href="/pages/my-bookings">Xem vé của tôi</a></p></div>';
           btnPay.style.display = 'none';
         } else {
           alert(data.error || data.message || 'Thanh toán thất bại');
@@ -132,7 +132,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if (!AUTH.isLoggedIn()) {
     const code = new URLSearchParams(location.search).get('code');
     if (code) {
-      document.getElementById('paymentContent').innerHTML = '<p style="color:#ef4444">Vui lòng đăng nhập để thanh toán.</p><a class="btn btn-primary" href="/login.html?redirect=' + encodeURIComponent(location.href) + '">Đăng nhập</a>';
+      document.getElementById('paymentContent').innerHTML = '<p style="color:#ef4444">Vui lòng đăng nhập để thanh toán.</p><a class="btn btn-primary" href="/login?redirect=' + encodeURIComponent(location.href) + '">Đăng nhập</a>';
       return;
     }
   }

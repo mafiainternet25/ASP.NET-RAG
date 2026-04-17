@@ -1,23 +1,6 @@
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Đăng nhập - Quốc Phim</title>
-  <link rel="stylesheet" href="/css/style.css">
-</head>
-<body>
-  <nav class="navbar">
-    <div class="container">
-      <a href="/" class="navbar-brand">Quốc Phim</a>
-      <ul class="nav-links">
-        <li><a href="/">Trang chủ</a></li>
-        <li><a href="/pages/movies.html">Phim</a></li>
-        <li><a href="/pages/booking.html">Đặt vé</a></li>
-        <li><a href="/login.html" class="btn-login">Đăng nhập</a></li>
-      </ul>
-    </div>
-  </nav>
+@{
+  ViewData["Title"] = "Đăng nhập - Quốc Phim";
+}
 
   <div class="container auth-container">
     <div class="auth-box">
@@ -65,6 +48,7 @@
     </div>
   </div>
 
+@section Scripts {
   <script src="/js/auth.js"></script>
   <script>
     document.getElementById('login-form').addEventListener('submit', async (e) => {
@@ -126,5 +110,4 @@
       }
     });
   </script>
-</body>
-</html>
+}

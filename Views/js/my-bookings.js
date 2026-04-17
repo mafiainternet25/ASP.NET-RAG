@@ -6,7 +6,7 @@ function renderNavAuth() {
   if (typeof AUTH !== 'undefined' && AUTH.isLoggedIn()) {
     el.innerHTML = '<button class="btn-logout" onclick="AUTH.clear();location.reload()">Đăng xuất</button>';
   } else {
-    el.innerHTML = '<a href="/login.html?redirect=' + encodeURIComponent(location.pathname + location.search) + '" class="btn-login">Đăng nhập</a>';
+    el.innerHTML = '<a href="/login?redirect=' + encodeURIComponent(location.pathname + location.search) + '" class="btn-login">Đăng nhập</a>';
   }
 }
 
@@ -14,7 +14,7 @@ async function loadBookings() {
   if (!AUTH.isLoggedIn()) {
     document.getElementById('loginPrompt').style.display = 'block';
     const loginLink = document.getElementById('loginLink');
-    if (loginLink) loginLink.href = '/login.html?redirect=' + encodeURIComponent(location.href);
+    if (loginLink) loginLink.href = '/login?redirect=' + encodeURIComponent(location.href);
     document.getElementById('bookingsList').innerHTML = '';
     return;
   }
@@ -47,12 +47,12 @@ async function loadBookings() {
       </div>
       <div style="display:flex;flex-direction:column;gap:0.5rem">
         ${b.status === 'PENDING' ? `
-          <a href="/pages/payment.html?code=${encodeURIComponent(b.bookingCode)}" class="btn btn-primary">Thanh toán</a>
+          <a href="/pages/payment?code=${encodeURIComponent(b.bookingCode)}" class="btn btn-primary">Thanh toán</a>
           <button class="btn btn-outline" onclick="cancelBooking(${b.id})">Hủy vé</button>
-        ` : b.movieId ? `<a href="/pages/movie-detail.html?id=${b.movieId}" class="btn btn-outline">Xem phim</a>` : ''}
+        ` : b.movieId ? `<a href="/pages/movie-detail?id=${b.movieId}" class="btn btn-outline">Xem phim</a>` : ''}
       </div>
     </div>
-  `}).join('') || '<p style="color:#888">Chưa có đơn đặt vé. <a href="/pages/booking.html" style="color:var(--primary)">Đặt vé ngay</a></p>';
+  `}).join('') || '<p style="color:#888">Chưa có đơn đặt vé. <a href="/pages/booking" style="color:var(--primary)">Đặt vé ngay</a></p>';
 }
 
 async function cancelBooking(id) {
