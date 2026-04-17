@@ -91,11 +91,7 @@ app.MapControllerRoute(
 
 app.MapFallbackToController("Index", "Pages");
 
-// RAG Service initialization - DISABLED by default to prevent startup crashes
-// Set RAG_SERVICE_ENABLED=true in environment to enable
-bool enableRagService = builder.Configuration.GetValue<bool>("RAG_SERVICE_ENABLED", false);
-
-if (app.Environment.IsDevelopment() && enableRagService)
+if (app.Environment.IsDevelopment())
 {
     try
     {
@@ -166,10 +162,6 @@ if (app.Environment.IsDevelopment() && enableRagService)
         Console.WriteLine($"✗ Failed to start RAG Service: {ex.Message}");
         Console.WriteLine($"  Stack trace: {ex.StackTrace}");
     }
-}
-else if (app.Environment.IsDevelopment())
-{
-    Console.WriteLine("ℹ RAG Service disabled. To enable, set RAG_SERVICE_ENABLED=true");
 }
 
 app.Run();
