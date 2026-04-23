@@ -5,75 +5,94 @@
 ```
 CinemaBooking/
 ├── Controllers/
+│   ├── AdminController.cs
+│   ├── ApiControllerBase.cs
 │   ├── AuthController.cs
-│   ├── MovieController.cs
-│   ├── ShowtimeController.cs
 │   ├── BookingController.cs
-│   ├── PaymentController.cs
-│   ├── ReviewController.cs
 │   ├── ChatbotController.cs
-│   └── Admin/
-│       ├── AdminMovieController.cs
-│       ├── AdminShowtimeController.cs
-│       ├── AdminRoomController.cs
-│       ├── AdminPromotionController.cs
-│       ├── AdminSnackController.cs        
-│       └── AdminReportController.cs
+│   ├── CinemasController.cs
+│   ├── MoviesController.cs
+│   ├── PagesController.cs
+│   ├── PaymentsController.cs
+│   ├── ReviewsController.cs
+│   ├── ShowtimesController.cs
+│   ├── SnacksController.cs
+│   └── UsersController.cs
+│     
 ├── Models/
 │   ├── Entities/
-│   │   ├── User.cs
-│   │   ├── Movie.cs
+│   │   ├── Booking.cs
+│   │   ├── BookingSeat.cs
+│   │   ├── BookingSnack.cs
 │   │   ├── Cinema.cs
+│   │   ├── Movie.cs
+│   │   ├── Promotion.cs
+│   │   ├── Review.cs
 │   │   ├── Room.cs
 │   │   ├── Seat.cs
 │   │   ├── Showtime.cs
-│   │   ├── Booking.cs
-│   │   ├── BookingSeat.cs
-│   │   ├── Payment.cs
-│   │   ├── Promotion.cs
-│   │   ├── Review.cs
 │   │   ├── Snack.cs                       
-│   │   └── BookingSnack.cs                
-│   └── ViewModels/
-│       ├── LoginViewModel.cs
-│       ├── RegisterViewModel.cs
-│       ├── MovieViewModel.cs
-│       ├── BookingViewModel.cs
-│       ├── SeatMapViewModel.cs
-│       ├── SnackViewModel.cs              
-│       ├── SnackSelectViewModel.cs        
-│       └── ChatViewModel.cs
+│   │   └── User.cs                
+│   ├── ApiOptions.cs     
+│   └── ApiRequests.cs
+│
 ├── Views/
+│   ├── css/
+│   │   └── style.css
+│   ├── js/
+│   │   ├── admin.js
+│   │   ├── auth.js
+│   │   ├── booking.js
+│   │   ├── main.js
+│   │   ├── movie-detail.js
+│   │   ├── movie.js
+│   │   ├── my-bookings.js
+│   │   ├── payment.js
+│   │   └── Profile.js
+│   │ 
+│   ├── pages/
+│   │   ├── admin.cshtml             
+│   │   ├── booking.cshtml             
+│   │   ├── movie-detail.cshtml             
+│   │   ├── movies.cshtml             
+│   │   ├── my-bookings.cshtml             
+│   │   ├── payment.cshtml             
+│   │   └── profile.cshtml
+│   │ 
 │   ├── Shared/
-│   │   ├── _Layout.cshtml
-│   │   └── _ChatbotWidget.cshtml
-│   ├── Movie/
-│   │   ├── Index.cshtml
-│   │   └── Detail.cshtml
-│   ├── Showtime/
-│   │   └── SeatMap.cshtml
-│   ├── Booking/
-│   │   ├── SelectSnack.cshtml             
-│   │   ├── Confirm.cshtml
-│   │   └── History.cshtml
-│   └── Admin/
-│       ├── Dashboard.cshtml
-│       ├── Snack/                         
-│       │   ├── Index.cshtml
-│       │   ├── Create.cshtml
-│       │   └── Edit.cshtml
-│       └── ...
+│   │   ├── _Footer_.cshtml             
+│   │   ├── _Layout_.cshtml
+│   │   └── _Navbar_.cshtml
+│   │ 
+│   ├── _ViewStart.cshtml
+│   ├── index.cshtml
+│   └── login.cshtml
+│
+├── RagService/
+│   ├── ingestor.py               
+│   ├── rag_service.py     
+│   ├── requirements.txgt                    
+│   └── retriever.py
+│
+├── Security/
+│   ├── JwtUtil.cs                    
+│   ├── TokenAuthenticationDefaults.cs                    
+│   └── TokenAuthenticationHandler.cs
+│
 ├── Services/
-│   ├── MovieService.cs
+│   ├── AdminService.cs
 │   ├── ShowtimeService.cs
-│   ├── BookingService.cs
-│   ├── PaymentService.cs
 │   ├── AuthService.cs
-│   ├── PromotionService.cs
-│   ├── SnackService.cs                    
-│   └── ChatbotService.cs
+│   ├── BookingService.cs
+│   ├── CurrentUserResolver.cs
+│   ├── MovieService.cs
+│   ├── PaymentService.cs       
+│   ├── ReviewService.cs                    
+│   ├── ServiceResult.cs                    
+│   └── ShowtimeService.cs
+│
 ├── Data/
-│   └── AppDbContext.cs
+│   └── ApplicationDbContext.cs
 ├── Migrations/
 ├── wwwroot/
 │   ├── css/
@@ -203,12 +222,6 @@ dotnet add package StackExchange.Redis
     "ApiUrl": "https://api.groq.com/openai/v1/chat/completions",
     "UseLlm": false
   },
-  "VNPay": {
-    "TmnCode": "YOUR_TMN_CODE",
-    "HashSecret": "YOUR_HASH_SECRET",
-    "Url": "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html",
-    "ReturnUrl": "https://localhost:5001/payment/vnpay-return"
-  },
   "Redis": {
     "ConnectionString": "localhost:6379"
   }
@@ -216,8 +229,6 @@ dotnet add package StackExchange.Redis
 ```
 
 ---
-
-## 💡 Prompt mẫu theo từng task
 
 ### 1. Tạo Entity + DbContext
 
