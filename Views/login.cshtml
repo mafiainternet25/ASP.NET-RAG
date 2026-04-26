@@ -1,113 +1,59 @@
 @{
   ViewData["Title"] = "Đăng nhập - Quốc Phim";
+  ViewData["BodyClass"] = "auth-page";
 }
 
-  <div class="container auth-container">
-    <div class="auth-box">
-      <h2>Đăng nhập</h2>
-      <div id="login-error" class="auth-error"></div>
-      <form id="login-form">
-        <div class="form-group">
-          <label>Tên đăng nhập</label>
-          <input class="form-control" type="text" id="login-username" required>
-        </div>
-        <div class="form-group">
-          <label>Mật khẩu</label>
-          <input class="form-control" type="password" id="login-password" required>
-        </div>
-        <button class="btn btn-primary" type="submit" style="width:100%">Đăng nhập</button>
-      </form>
-    </div>
-
-    <div class="auth-box">
-      <h2>Đăng ký tài khoản</h2>
-      <div id="register-error" class="auth-error"></div>
-      <form id="register-form">
-        <div class="form-group">
-          <label>Tên đăng nhập</label>
-          <input class="form-control" type="text" id="reg-username" required>
-        </div>
-        <div class="form-group">
-          <label>Email</label>
-          <input class="form-control" type="email" id="reg-email" required>
-        </div>
-        <div class="form-group">
-          <label>Mật khẩu</label>
-          <input class="form-control" type="password" id="reg-password" required>
-        </div>
-        <div class="form-group">
-          <label>Họ tên</label>
-          <input class="form-control" type="text" id="reg-fullname">
-        </div>
-        <div class="form-group">
-          <label>Số điện thoại</label>
-          <input class="form-control" type="text" id="reg-phone">
-        </div>
-        <button class="btn btn-primary" type="submit" style="width:100%">Đăng ký</button>
-      </form>
+<div class="auth-container">
+  <div class="auth-box">
+    <h2>Đăng nhập</h2>
+    <div id="login-error" class="auth-error"></div>
+    <form id="login-form">
+      <div class="form-group">
+        <label>Tên đăng nhập</label>
+        <input class="form-control" type="text" id="login-username" required>
+      </div>
+      <div class="form-group">
+        <label>Mật khẩu</label>
+        <input class="form-control" type="password" id="login-password" required>
+      </div>
+      <button class="btn btn-primary" type="submit" style="width:100%">Đăng nhập</button>
+    </form>
+    
+    <div class="auth-link" style="text-align: center; margin-top: 20px;">
+      <p style="color: red;">Chưa có tài khoản? <a href="/register" style="color: #007bff; text-decoration: none;">Đăng ký ngay</a></p>
     </div>
   </div>
+</div>
 
 @section Scripts {
   <script src="/js/auth.js"></script>
   <script>
     document.getElementById('login-form').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const err = document.getElementById('login-error');
-      err.style.display = 'none';
-      try {
-        const res = await fetch('/api/auth/login', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            username: document.getElementById('login-username').value,
-            password: document.getElementById('login-password').value
-          })
-        });
-        const data = await res.json();
-        if (res.ok) {
-          AUTH.setTokens(data.accessToken, data.refreshToken);
-          const redirect = new URLSearchParams(location.search).get('redirect');
-          window.location.href = (redirect && redirect.startsWith('/')) ? redirect : '/';
-        } else {
-          err.textContent = data.error || 'Đăng nhập thất bại';
-          err.style.display = 'block';
-        }
-      } catch (e) {
-        err.textContent = 'Lỗi kết nối';
-        err.style.display = 'block';
-      }
+    e.preventDefault();
+    const err = document.getElementById('login-error');
+    err.style.display = 'none';
+    try {
+    const res = await fetch('/api/auth/login', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+    username: document.getElementById('login-username').value,
+    password: document.getElementById('login-password').value
+    })
     });
-
-    document.getElementById('register-form').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const err = document.getElementById('register-error');
-      err.style.display = 'none';
-      try {
-        const res = await fetch('/api/auth/register', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            username: document.getElementById('reg-username').value,
-            email: document.getElementById('reg-email').value,
-            password: document.getElementById('reg-password').value,
-            fullName: document.getElementById('reg-fullname').value,
-            phone: document.getElementById('reg-phone').value
-          })
-        });
-        const data = await res.json();
-        if (res.ok) {
-          AUTH.setTokens(data.accessToken, data.refreshToken);
-          const redirect = new URLSearchParams(location.search).get('redirect');
-          window.location.href = (redirect && redirect.startsWith('/')) ? redirect : '/';
-        } else {
-          err.textContent = data.error || 'Đăng ký thất bại';
-          err.style.display = 'block';
-        }
-      } catch (e) {
-        err.textContent = 'Lỗi kết nối';
-        err.style.display = 'block';
-      }
+    const data = await res.json();
+    if (res.ok) {
+    AUTH.setTokens(data.accessToken, data.refreshToken);
+    const redirect = new URLSearchParams(location.search).get('redirect');
+    window.location.href = (redirect && redirect.startsWith('/')) ? redirect : '/';
+    } else {
+    err.textContent = data.error || 'Đăng nhập thất bại';
+    err.style.display = 'block';
+    }
+    } catch (e) {
+    err.textContent = 'Lỗi kết nối';
+    err.style.display = 'block';
+    }
     });
   </script>
 }

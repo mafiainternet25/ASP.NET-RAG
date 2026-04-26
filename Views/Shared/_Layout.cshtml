@@ -7,10 +7,19 @@
   <link rel="stylesheet" href="/css/style.css">
   @await RenderSectionAsync("Styles", required: false)
 </head>
-<body>
+<body class="@(ViewData["BodyClass"]?.ToString() ?? string.Empty)">
   @await Html.PartialAsync("_Navbar")
 
-  @RenderBody()
+  @if ((ViewData["BodyClass"]?.ToString() ?? string.Empty) == "auth-page")
+  {
+    <main class="auth-main">
+      @RenderBody()
+    </main>
+  }
+  else
+  {
+    @RenderBody()
+  }
 
   @await Html.PartialAsync("_Footer")
 

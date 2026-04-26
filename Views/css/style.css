@@ -682,11 +682,39 @@ footer {
 
 /* Auth forms */
 .auth-container {
-    max-width: 900px;
-    margin: 2rem auto;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding: 1rem;
+    box-sizing: border-box;
+}
+
+/* Auth pages layout */
+body.auth-page {
+    min-height: 100dvh;
+}
+
+.auth-main {
+    min-height: calc(100dvh - 64px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    margin-left: calc(50% - 50vw);
+    padding: 1rem;
+}
+
+body.auth-page .auth-container {
+    display: block;
+    width: min(100%, 450px);
+    min-height: auto;
+    padding: 0;
+    margin: 0;
+}
+
+body.auth-page footer {
+    display: none;
 }
 
 .auth-box {
@@ -694,6 +722,9 @@ footer {
     padding: 2rem;
     border-radius: 12px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    width: 100%;
+    max-width: 450px;
+    margin: 0;
 }
 
 .auth-box h2 {
@@ -791,8 +822,15 @@ footer {
 
 /* Responsive */
 @media (max-width: 768px) {
-    .auth-container {
-        grid-template-columns: 1fr;
+    .auth-container { padding: 0; }
+
+    .auth-box {
+        max-width: 100%;
+    }
+
+    .auth-main {
+        min-height: calc(100dvh - 56px);
+        padding: 0.75rem;
     }
 
     .movie-detail {

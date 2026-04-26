@@ -10,6 +10,15 @@ public class PagesController : Controller
     [HttpGet("/login")]
     public IActionResult Login() => View("~/Views/login.cshtml");
 
+    [HttpGet("/auth/login")]
+    public IActionResult AuthLogin() => View("~/Views/login.cshtml");
+
+    [HttpGet("/register")]
+    public IActionResult Register() => View("~/Views/register.cshtml");
+
+    [HttpGet("/auth/register")]
+    public IActionResult AuthRegister() => View("~/Views/register.cshtml");
+
     [HttpGet("/pages/movies")]
     public IActionResult Movies() => View("~/Views/pages/movies.cshtml");
 
@@ -31,7 +40,6 @@ public class PagesController : Controller
     [HttpGet("/pages/admin")]
     public IActionResult Admin() => View("~/Views/pages/admin.cshtml");
 
-    // Backward-compatible redirects from old .html URLs.
     [HttpGet("/index.html")]
     public IActionResult LegacyIndex() => RedirectPermanent("/");
 
