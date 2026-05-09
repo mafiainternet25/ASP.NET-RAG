@@ -5,7 +5,6 @@ namespace web.Controllers;
 
 public class PagesController : Controller
 {
-    // Legacy .html file redirects
     [HttpGet("/index.html")]
     public IActionResult LegacyIndex() => RedirectPermanent("/");
 
