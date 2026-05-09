@@ -7,10 +7,22 @@ using web.Services;
 namespace web.Controllers;
 
 [Route("api/auth")]
-public class AuthController : ControllerBase
+public class AuthController : Controller
 {
     private readonly ApplicationDbContext _db;
     private readonly AuthSessionService _auth;
+
+    [HttpGet("/login")]
+    public IActionResult Login() => View();
+
+    [HttpGet("/auth/login")]
+    public IActionResult AuthLogin() => View("Login");
+
+    [HttpGet("/register")]
+    public IActionResult Register() => View();
+
+    [HttpGet("/auth/register")]
+    public IActionResult AuthRegister() => View("Register");
 
     public AuthController(ApplicationDbContext db, AuthSessionService auth)
     {

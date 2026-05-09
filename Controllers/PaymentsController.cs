@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using web.Services;
 
@@ -8,6 +9,14 @@ namespace web.Controllers;
 public class PaymentsController : ApiControllerBase
 {
     private readonly PaymentService _paymentService;
+
+    [AllowAnonymous]
+    [HttpGet("/payment")]
+    public IActionResult Index() => View();
+
+    [AllowAnonymous]
+    [HttpGet("/pages/payment")]
+    public IActionResult PaymentPage() => View("Index");
 
     public PaymentsController(PaymentService paymentService, CurrentUserResolver userResolver) : base(userResolver)
     {

@@ -5,7 +5,7 @@ using web.Services;
 namespace web.Controllers;
 
 [ApiController]
-public abstract class ApiControllerBase : ControllerBase
+public abstract class ApiControllerBase : Controller
 {
     protected readonly CurrentUserResolver CurrentUserResolver;
 

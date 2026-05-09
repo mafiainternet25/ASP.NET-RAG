@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using web.Data;
@@ -11,6 +12,15 @@ namespace web.Controllers;
 public class UsersController : ApiControllerBase
 {
     private readonly ApplicationDbContext _db;
+
+    // View routes
+    [AllowAnonymous]
+    [HttpGet("/profile")]
+    public IActionResult Profile() => View();
+
+    [AllowAnonymous]
+    [HttpGet("/pages/profile")]
+    public IActionResult ProfilePage() => View("Profile");
 
     public UsersController(ApplicationDbContext db, CurrentUserResolver userResolver) : base(userResolver)
     {

@@ -13,6 +13,14 @@ public class AdminController : ApiControllerBase
 {
     private readonly AdminService _adminService;
 
+    [AllowAnonymous]
+    [HttpGet("/admin")]
+    public IActionResult Index() => View();
+
+    [AllowAnonymous]
+    [HttpGet("/pages/admin")]
+    public IActionResult AdminPage() => View("Index");
+
     public AdminController(AdminService adminService, CurrentUserResolver userResolver) : base(userResolver)
     {
         _adminService = adminService;

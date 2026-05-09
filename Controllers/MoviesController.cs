@@ -5,9 +5,21 @@ namespace web.Controllers;
 
 [ApiController]
 [Route("api")]
-public class MoviesController : ControllerBase
+public class MoviesController : Controller
 {
     private readonly MovieService _movieService;
+
+    [HttpGet("/movies")]
+    public IActionResult Index() => View();
+
+    [HttpGet("/pages/movies")]
+    public IActionResult MoviesPage() => View("Index");
+
+    [HttpGet("/movie/{id}")]
+    public IActionResult Detail(int id) => View();
+
+    [HttpGet("/pages/movie-detail")]
+    public IActionResult MovieDetailPage() => View("Detail");
 
     public MoviesController(MovieService movieService)
     {

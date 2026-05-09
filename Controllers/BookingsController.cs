@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using web.Models;
 using web.Services;
@@ -9,6 +10,22 @@ namespace web.Controllers;
 public class BookingsController : ApiControllerBase
 {
     private readonly BookingService _bookingService;
+
+    [AllowAnonymous]
+    [HttpGet("/bookings")]
+    public IActionResult Index() => View();
+
+    [AllowAnonymous]
+    [HttpGet("/pages/booking")]
+    public IActionResult BookingPage() => View("Index");
+
+    [AllowAnonymous]
+    [HttpGet("/my-bookings")]
+    public IActionResult MyBookingsView() => View("MyBookings");
+
+    [AllowAnonymous]
+    [HttpGet("/pages/my-bookings")]
+    public IActionResult MyBookingsPage() => View("MyBookings");
 
     public BookingsController(BookingService bookingService, CurrentUserResolver userResolver) : base(userResolver)
     {
