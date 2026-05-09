@@ -1,24 +1,33 @@
+# 🎬 Hướng dẫn Project Cinema Booking ASP.NET Core
+
 ---
 
-## 📁 Cấu trúc project (MVC Pattern)
+## 📁 Cấu trúc project (MVC + API Pattern)
 
 ```
 CinemaBooking/
 ├── Controllers/
-│   ├── AdminController.cs
 │   ├── ApiControllerBase.cs
-│   ├── AuthController.cs
-│   ├── BookingController.cs
-│   ├── ChatbotController.cs
-│   ├── CinemasController.cs
-│   ├── MoviesController.cs
-│   ├── PagesController.cs
-│   ├── PaymentsController.cs
-│   ├── ReviewsController.cs
-│   ├── ShowtimesController.cs
-│   ├── SnacksController.cs
-│   └── UsersController.cs
-│     
+│   ├── AdminController.cs (API)
+│   ├── AdminViewController.cs (MVC Views)
+│   ├── AuthController.cs (API)
+│   ├── AuthViewController.cs (MVC Views)
+│   ├── BookingsController.cs (API)
+│   ├── BookingViewController.cs (MVC Views)
+│   ├── ChatbotController.cs (API)
+│   ├── CinemasController.cs (API)
+│   ├── HomeController.cs (MVC Views)
+│   ├── MoviesController.cs (API)
+│   ├── MovieViewController.cs (MVC Views)
+│   ├── PagesController.cs (API)
+│   ├── PaymentsController.cs (API)
+│   ├── PaymentViewController.cs (MVC Views)
+│   ├── ReviewsController.cs (API)
+│   ├── ShowtimesController.cs (API)
+│   ├── SnacksController.cs (API)
+│   ├── UsersController.cs (API)
+│   └── UserViewController.cs (MVC Views)
+│
 ├── Models/
 │   ├── Entities/
 │   │   ├── Booking.cs
@@ -31,64 +40,57 @@ CinemaBooking/
 │   │   ├── Room.cs
 │   │   ├── Seat.cs
 │   │   ├── Showtime.cs
-│   │   ├── Snack.cs                       
-│   │   └── User.cs                
-│   ├── ApiOptions.cs     
+│   │   ├── Snack.cs
+│   │   └── User.cs
+│   ├── ApiOptions.cs
 │   └── ApiRequests.cs
 │
 ├── Views/
-│   ├── css/
-│   │   └── style.css
-│   ├── js/
-│   │   ├── admin.js
-│   │   ├── auth.js
-│   │   ├── booking.js
-│   │   ├── main.js
-│   │   ├── movie-detail.js
-│   │   ├── movie.js
-│   │   ├── my-bookings.js
-│   │   ├── payment.js
-│   │   └── Profile.js
-│   │ 
-│   ├── pages/
-│   │   ├── admin.cshtml             
-│   │   ├── booking.cshtml             
-│   │   ├── movie-detail.cshtml             
-│   │   ├── movies.cshtml             
-│   │   ├── my-bookings.cshtml             
-│   │   ├── payment.cshtml             
-│   │   └── profile.cshtml
-│   │ 
+│   ├── Admin/
+│   │   └── Index.cshtml
+│   ├── Auth/
+│   │   ├── Login.cshtml
+│   │   └── Register.cshtml
+│   ├── Bookings/
+│   │   ├── Index.cshtml
+│   │   └── MyBookings.cshtml
+│   ├── Chatbot/
+│   ├── Cinemas/
+│   ├── Home/
+│   │   └── Index.cshtml
+│   ├── Movies/
+│   ├── Pages/
+│   ├── Payments/
+│   ├── Reviews/
 │   ├── Shared/
-│   │   ├── _Footer_.cshtml             
-│   │   ├── _Layout_.cshtml
-│   │   └── _Navbar_.cshtml
-│   │ 
+│   ├── Showtimes/
+│   ├── Snacks/
+│   ├── Users/
 │   ├── _ViewStart.cshtml
-│   ├── index.cshtml
-│   └── login.cshtml
 │
 ├── RagService/
-│   ├── ingestor.py               
-│   ├── rag_service.py     
-│   ├── requirements.txgt                    
+│   ├── ingestor.py
+│   ├── rag_service.py
+│   ├── requirements.txgt
 │   └── retriever.py
 │
 ├── Security/
-│   ├── JwtUtil.cs                    
-│   ├── TokenAuthenticationDefaults.cs                    
+│   ├── JwtUtil.cs
+│   ├── TokenAuthenticationDefaults.cs
 │   └── TokenAuthenticationHandler.cs
 │
 ├── Services/
-│   ├── AdminService.cs
-│   ├── ShowtimeService.cs
+│   ├── AdminService.cst
+│   ├── AuthService.cs
+│   ├── BookingService.cs
+│   ├── Chatbotoma.sqlite3ice.cs
 │   ├── AuthService.cs
 │   ├── BookingService.cs
 │   ├── CurrentUserResolver.cs
 │   ├── MovieService.cs
-│   ├── PaymentService.cs       
-│   ├── ReviewService.cs                    
-│   ├── ServiceResult.cs                    
+│   ├── PaymentService.cs
+│   ├── ReviewService.cs
+│   ├── ServiceResult.cs
 │   └── ShowtimeService.cs
 │
 ├── Data/
@@ -98,7 +100,7 @@ CinemaBooking/
 │   ├── css/
 │   ├── js/
 │   ├── uploads/
-│   │   └── snacks/                         
+│   │   └── snacks/
 │   └── images/
 └── appsettings.json
 ```
