@@ -2,44 +2,10 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace web.Controllers;
 
+
 public class PagesController : Controller
 {
-    [HttpGet("/")]
-    public IActionResult Index() => View("~/Views/index.cshtml");
-
-    [HttpGet("/login")]
-    public IActionResult Login() => View("~/Views/login.cshtml");
-
-    [HttpGet("/auth/login")]
-    public IActionResult AuthLogin() => View("~/Views/login.cshtml");
-
-    [HttpGet("/register")]
-    public IActionResult Register() => View("~/Views/register.cshtml");
-
-    [HttpGet("/auth/register")]
-    public IActionResult AuthRegister() => View("~/Views/register.cshtml");
-
-    [HttpGet("/pages/movies")]
-    public IActionResult Movies() => View("~/Views/pages/movies.cshtml");
-
-    [HttpGet("/pages/movie-detail")]
-    public IActionResult MovieDetail() => View("~/Views/pages/movie-detail.cshtml");
-
-    [HttpGet("/pages/booking")]
-    public IActionResult Booking() => View("~/Views/pages/booking.cshtml");
-
-    [HttpGet("/pages/my-bookings")]
-    public IActionResult MyBookings() => View("~/Views/pages/my-bookings.cshtml");
-
-    [HttpGet("/pages/payment")]
-    public IActionResult Payment() => View("~/Views/pages/payment.cshtml");
-
-    [HttpGet("/pages/profile")]
-    public IActionResult Profile() => View("~/Views/pages/profile.cshtml");
-
-    [HttpGet("/pages/admin")]
-    public IActionResult Admin() => View("~/Views/pages/admin.cshtml");
-
+    // Legacy .html file redirects
     [HttpGet("/index.html")]
     public IActionResult LegacyIndex() => RedirectPermanent("/");
 
@@ -51,13 +17,13 @@ public class PagesController : Controller
     {
         var target = slug switch
         {
-            "movies" => "/pages/movies",
-            "movie-detail" => "/pages/movie-detail",
-            "booking" => "/pages/booking",
-            "my-bookings" => "/pages/my-bookings",
-            "payment" => "/pages/payment",
-            "profile" => "/pages/profile",
-            "admin" => "/pages/admin",
+            "movies" => "/movies",
+            "movie-detail" => "/movie-detail",
+            "booking" => "/bookings",
+            "my-bookings" => "/my-bookings",
+            "payment" => "/payment",
+            "profile" => "/profile",
+            "admin" => "/admin",
             _ => "/"
         };
 

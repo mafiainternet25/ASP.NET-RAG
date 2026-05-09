@@ -87,9 +87,9 @@ app.UseAuthorization();
 app.MapControllers();
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Pages}/{action=Index}/{id?}");
+    pattern: "{controller=Home}/{action=Index}/{id?}");
 
-app.MapFallbackToController("Index", "Pages");
+app.MapFallbackToController("Index", "Home");
 
 if (app.Environment.IsDevelopment())
 {
