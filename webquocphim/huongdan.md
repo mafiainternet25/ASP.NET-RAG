@@ -9,24 +9,18 @@ CinemaBooking/
 ├── Controllers/
 │   ├── ApiControllerBase.cs
 │   ├── AdminController.cs (API)
-│   ├── AdminViewController.cs (MVC Views)
 │   ├── AuthController.cs (API)
-│   ├── AuthViewController.cs (MVC Views)
 │   ├── BookingsController.cs (API)
-│   ├── BookingViewController.cs (MVC Views)
 │   ├── ChatbotController.cs (API)
 │   ├── CinemasController.cs (API)
 │   ├── HomeController.cs (MVC Views)
 │   ├── MoviesController.cs (API)
-│   ├── MovieViewController.cs (MVC Views)
 │   ├── PagesController.cs (API)
 │   ├── PaymentsController.cs (API)
-│   ├── PaymentViewController.cs (MVC Views)
 │   ├── ReviewsController.cs (API)
 │   ├── ShowtimesController.cs (API)
 │   ├── SnacksController.cs (API)
 │   ├── UsersController.cs (API)
-│   └── UserViewController.cs (MVC Views)
 │
 ├── Models/
 │   ├── Entities/
