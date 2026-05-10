@@ -14,7 +14,6 @@ def vector_search(query: str,
                   embed_model: SentenceTransformer,
                   collection: chromadb.Collection,
                   top_k: int = 4) -> list[str]:
-    """Tìm top_k chunk gần nhất với câu hỏi"""
     try:
         query_vec = embed_model.encode(f"query: {query}").tolist()
         results = collection.query(
@@ -28,7 +27,6 @@ def vector_search(query: str,
 
 
 def sql_realtime_context(message: str) -> str:
-    """SQL fallback cho dữ liệu thay đổi liên tục (lịch chiếu hôm nay, tồn kho)"""
     msg = message.lower()
     ctx_lines = []
 

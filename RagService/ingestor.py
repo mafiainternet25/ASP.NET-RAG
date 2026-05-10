@@ -13,7 +13,6 @@ def get_connection():
     return mysql.connector.connect(**DB_CONFIG)
 
 def build_documents(cursor) -> tuple[list[str], list[str]]:
-    """Query MySQL và build text documents để embedding"""
     documents = []
     ids = []
 
@@ -120,7 +119,6 @@ def build_documents(cursor) -> tuple[list[str], list[str]]:
 
 def ingest(embed_model: SentenceTransformer,
            collection: chromadb.Collection) -> int:
-    """Xóa collection cũ, nạp lại toàn bộ từ MySQL"""
     try:
         conn = get_connection()
         cursor = conn.cursor()

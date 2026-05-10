@@ -84,7 +84,6 @@ class ChatRequest(BaseModel):
 
 @app.post("/ingest")
 def ingest_endpoint():
-    """Nạp/cập nhật toàn bộ dữ liệu MySQL vào ChromaDB"""
     try:
         total = ingest(embed_model, collection)
         return {"status": "ok", "total_documents": total}
@@ -95,7 +94,6 @@ def ingest_endpoint():
 
 @app.post("/chat")
 def chat_endpoint(req: ChatRequest):
-    """Nhận câu hỏi → RAG → trả lời"""
     try:
         chunks = vector_search(req.message, embed_model, collection, top_k=4)
 
