@@ -207,10 +207,45 @@ public class AdminService
             return ServiceResult.BadRequest("Phong khong ton tai");
         }
 
-        var duplicated = await _db.Showtimes.AnyAsync(x => x.RoomId == body.RoomId && x.StartTime == body.StartTime);
-        if (duplicated)
+        var movie = await _db.Movies.AsNoTracking()
+            .FirstOrDefaultAsync(x => x.Id == body.MovieId);
+        var durationMin = movie?.DurationMin ?? 120;
+
+        var newStart = body.StartTime;
+        var newEnd = newStart.AddMinutes(durationMin);
+        var targetDate = newStart.Date;
+
+        var showtimesInRoom = await _db.Showtimes
+            .AsNoTracking()
+            .Where(x => x.RoomId == body.RoomId
+                     && x.StartTime.Date == targetDate)
+            .ToListAsync();
+
+        const int MaxShowtimesPerRoomPerDay = 4;
+        if (showtimesInRoom.Count >= MaxShowtimesPerRoomPerDay)
         {
-            return ServiceResult.BadRequest("Da ton tai suat chieu cung gio trong phong nay");
+            return ServiceResult.BadRequest(
+                $"Phong nay da co {MaxShowtimesPerRoomPerDay} suat chieu trong ngay, khong the them");
+        }
+
+        const int MinGapMinutes = 30;
+
+        foreach (var existing in showtimesInRoom)
+        {
+            var existingMovie = await _db.Movies.AsNoTracking()
+                .FirstOrDefaultAsync(m => m.Id == existing.MovieId);
+            var existingDuration = existingMovie?.DurationMin ?? 120;
+            var existingEnd = existing.StartTime.AddMinutes(existingDuration);
+
+            bool tooClose =
+                newStart < existingEnd.AddMinutes(MinGapMinutes) &&
+                newEnd > existing.StartTime.AddMinutes(-MinGapMinutes);
+
+            if (tooClose)
+            {
+                return ServiceResult.BadRequest(
+                    $"Suat chieu moi phai cach suat [{existing.StartTime:HH:mm} - {existingEnd:HH:mm}] it nhat {MinGapMinutes} phut");
+            }
         }
 
         _db.Showtimes.Add(body);
@@ -250,10 +285,46 @@ public class AdminService
             return ServiceResult.BadRequest("Phong khong ton tai");
         }
 
-        var duplicated = await _db.Showtimes.AnyAsync(x => x.Id != id && x.RoomId == body.RoomId && x.StartTime == body.StartTime);
-        if (duplicated)
+        var movie = await _db.Movies.AsNoTracking()
+            .FirstOrDefaultAsync(x => x.Id == body.MovieId);
+        var durationMin = movie?.DurationMin ?? 120;
+
+        var newStart = body.StartTime;
+        var newEnd = newStart.AddMinutes(durationMin);
+        var targetDate = newStart.Date;
+
+        var showtimesInRoom = await _db.Showtimes
+            .AsNoTracking()
+            .Where(x => x.RoomId == body.RoomId
+                     && x.StartTime.Date == targetDate
+                     && x.Id != id)
+            .ToListAsync();
+
+        const int MaxShowtimesPerRoomPerDay = 4;
+        const int MinGapMinutes = 30;
+
+        if (showtimesInRoom.Count >= MaxShowtimesPerRoomPerDay)
         {
-            return ServiceResult.BadRequest("Da ton tai suat chieu cung gio trong phong nay");
+            return ServiceResult.BadRequest(
+                $"Phong nay da co {MaxShowtimesPerRoomPerDay} suat chieu trong ngay");
+        }
+
+        foreach (var existing in showtimesInRoom)
+        {
+            var existingMovie = await _db.Movies.AsNoTracking()
+                .FirstOrDefaultAsync(m => m.Id == existing.MovieId);
+            var existingDuration = existingMovie?.DurationMin ?? 120;
+            var existingEnd = existing.StartTime.AddMinutes(existingDuration);
+
+            bool tooClose =
+                newStart < existingEnd.AddMinutes(MinGapMinutes) &&
+                newEnd > existing.StartTime.AddMinutes(-MinGapMinutes);
+
+            if (tooClose)
+            {
+                return ServiceResult.BadRequest(
+                    $"Suat chieu moi phai cach suat [{existing.StartTime:HH:mm} - {existingEnd:HH:mm}] it nhat {MinGapMinutes} phut");
+            }
         }
 
         item.MovieId = body.MovieId;
