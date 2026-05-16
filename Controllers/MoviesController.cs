@@ -34,10 +34,24 @@ public class MoviesController : Controller
     }
 
     [HttpGet("movies/search")]
-    public async Task<IResult> SearchMovies([FromQuery] string? q, [FromQuery] string? genre, [FromQuery] int? page, [FromQuery] int? size)
+    public async Task<IResult> SearchMovies([FromQuery] string? q, [FromQuery] string? genre, [FromQuery] int? cinemaId, [FromQuery] DateTime? fromDate, [FromQuery] int? page, [FromQuery] int? size)
     {
-        var data = await _movieService.SearchMoviesAsync(q, genre, page, size);
+        var data = await _movieService.SearchMoviesAsync(q, genre, cinemaId, fromDate, page, size);
         return Results.Ok(data);
+    }
+
+    [HttpGet("movies/suggestions")]
+    public async Task<IResult> GetSearchSuggestions([FromQuery] string? q, [FromQuery] string? genre, [FromQuery] int? cinemaId, [FromQuery] DateTime? fromDate)
+    {
+        var suggestions = await _movieService.SearchSuggestionsAsync(q, genre, cinemaId, fromDate);
+        return Results.Ok(suggestions);
+    }
+
+    [HttpGet("movies/genres")]
+    public async Task<IResult> GetGenres()
+    {
+        var genres = await _movieService.GetAllGenresAsync();
+        return Results.Ok(genres);
     }
 
     [HttpGet("movies/now-playing")]

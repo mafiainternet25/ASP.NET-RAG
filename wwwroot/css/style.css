@@ -233,6 +233,7 @@ body {
     gap: 1rem;
     margin-bottom: 2rem;
     flex-wrap: wrap;
+    align-items: center;
 }
 
 .search-input {
@@ -242,6 +243,73 @@ body {
 
 .filter-select {
     min-width: 150px;
+}
+
+/* Real-time Search Dropdown */
+.suggestions-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: #2a2a2a;
+    border: 1px solid #c9a227;
+    border-top: none;
+    border-radius: 0 0 6px 6px;
+    max-height: 400px;
+    overflow-y: auto;
+    z-index: 1000;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+}
+
+.suggestions-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.suggestion-item {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid #3a3a3a;
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.suggestion-item:hover {
+    background-color: rgba(201, 162, 39, 0.15);
+    color: #c9a227;
+}
+
+.suggestion-item:last-child {
+    border-bottom: none;
+}
+
+/* Style suggestion item title */
+.suggestion-item > div > div:nth-child(2) > div:first-child {
+    color: #ffffff !important;
+    font-weight: 600;
+}
+
+.suggestion-item:hover > div > div:nth-child(2) > div:first-child {
+    color: #c9a227 !important;
+}
+
+.suggestion-item img {
+    object-fit: cover;
+}
+
+/* Responsive filter section */
+@media (max-width: 768px) {
+    .filter-section {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+
+    .search-input,
+    .filter-select,
+    .btn-primary {
+        width: 100%;
+        min-width: unset;
+    }
 }
 
 /* Booking */

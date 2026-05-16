@@ -2,28 +2,52 @@
   ViewData["Title"] = "Phim - Quốc Phim";
 }
 
-  <div class="container section">
-    <h2>Danh sách phim</h2>
-    <div class="filter-section">
-      <input id="searchInput" class="search-input" placeholder="Tìm theo tên, thể loại...">
-      <select id="genreSelect" class="filter-select">
-        <option value="">Tất cả thể loại</option>
-        <option value="Action">Action</option>
-        <option value="Drama">Drama</option>
-        <option value="Sci-Fi">Sci-Fi</option>
-        <option value="Comedy">Comedy</option>
-        <option value="Horror">Horror</option>
-        <option value="Romance">Romance</option>
-        <option value="Thriller">Thriller</option>
-        <option value="Animation">Animation</option>
-        <option value="Adventure">Adventure</option>
-      </select>
-      <button class="btn btn-primary" onclick="currentPage=0;searchMovies(0)">Tìm kiếm</button>
+<div class="container section">
+  <h2>Danh sách phim</h2>
+  
+  <!-- Real-time Search Section -->
+  <div class="filter-section">
+    <!-- Search with Dropdown -->
+    <div style="position: relative; flex: 1; min-width: 250px;">
+      <input 
+        id="searchInput" 
+        class="search-input" 
+        placeholder="🔍 Tìm theo tên phim..."
+        autocomplete="off"
+      >
+      <!-- Real-time Suggestions Dropdown -->
+      <div id="suggestionsDropdown" class="suggestions-dropdown" style="display: none;">
+        <ul id="suggestionsList" class="suggestions-list"></ul>
+      </div>
     </div>
-    <div id="moviesGrid" class="movies-grid"></div>
-    <div id="pagination" class="pagination" style="display:flex;justify-content:center;gap:0.5rem;margin-top:2rem;flex-wrap:wrap"></div>
-    <p id="moviesCount" style="text-align:center;color:#888;margin-top:1rem;font-size:0.9rem"></p>
+
+    <!-- Genre Filter -->
+    <select id="genreSelect" class="filter-select">
+      <option value="">📽️ Tất cả thể loại</option>
+      <!-- Will be populated by JavaScript from database -->
+    </select>
+
+    <!-- Cinema Filter -->
+    <select id="cinemaSelect" class="filter-select">
+      <option value="">🏢 Tất cả rạp</option>
+      <!-- Will be populated by JavaScript -->
+    </select>
+
+    <!-- Search Button -->
+    <button class="btn btn-primary" onclick="currentPage=0;searchMovies(0)" style="white-space: nowrap; min-width: 100px;">
+      🔍 Tìm
+    </button>
   </div>
+
+  <!-- Movies Grid -->
+  <div id="moviesGrid" class="movies-grid"></div>
+  
+  <!-- Pagination -->
+  <div id="pagination" class="pagination" style="display:flex;justify-content:center;gap:0.5rem;margin-top:2rem;flex-wrap:wrap"></div>
+  
+  <!-- Count -->
+  <p id="moviesCount" style="text-align:center;color:#888;margin-top:1rem;font-size:0.9rem"></p>
+</div>
 
 @section Scripts {
   <script src="/js/auth.js"></script>

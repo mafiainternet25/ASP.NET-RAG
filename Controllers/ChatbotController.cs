@@ -36,4 +36,27 @@ public class ChatbotController : ControllerBase
             return Results.Ok(new { reply = "Da co loi khi goi AI. Vui long thu lai sau." });
         }
     }
+
+    [HttpPost("ingest")]
+    public async Task<IResult> Ingest()
+    {
+        try
+        {
+            _logger.LogInformation("Manual ingest request triggered");
+            var success = await _chatbotService.IngestAsync(HttpContext.RequestAborted);
+            if (success)
+            {
+                return Results.Ok(new { status = "ok", message = "RAG data updated successfully" });
+            }
+            else
+            {
+                return Results.BadRequest(new { status = "error", message = "Failed to update RAG data" });
+            }
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Ingest operation failed");
+            return Results.Json(new { status = "error", message = ex.Message }, statusCode: 500);
+        }
+    }
 }

@@ -79,4 +79,35 @@ public class ChatbotService
             return "Loi bat ngo: " + ex.Message;
         }
     }
+
+    public async Task<bool> IngestAsync(CancellationToken cancellationToken = default)
+    {
+        try
+        {
+            var client = _httpClientFactory.CreateClient();
+            client.Timeout = TimeSpan.FromSeconds(60);
+
+            var response = await client.PostAsync(
+                $"{RagServiceUrl}/ingest",
+                new StringContent("", System.Text.Encoding.UTF8, "application/json"),
+                cancellationToken);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                _logger.LogError($"RAG ingest service returned {response.StatusCode}");
+                return false;
+            }
+
+            var responseJson = await response.Content.ReadAsStringAsync(cancellationToken);
+            using var doc = JsonDocument.Parse(responseJson);
+            var totalDocuments = doc.RootElement.GetProperty("total_documents").GetInt32();
+            _logger.LogInformation($"Successfully ingested {totalDocuments} documents into RAG system");
+            return true;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError($"Error calling RAG ingest service: {ex.Message}");
+            return false;
+        }
+    }
 }

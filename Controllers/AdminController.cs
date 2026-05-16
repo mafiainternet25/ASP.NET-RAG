@@ -12,6 +12,7 @@ namespace web.Controllers;
 public class AdminController : ApiControllerBase
 {
     private readonly AdminService _adminService;
+    private readonly ChatbotService _chatbotService;
 
     [AllowAnonymous]
     [HttpGet("/admin")]
@@ -21,9 +22,10 @@ public class AdminController : ApiControllerBase
     [HttpGet("/pages/admin")]
     public IActionResult AdminPage() => View("Index");
 
-    public AdminController(AdminService adminService, CurrentUserResolver userResolver) : base(userResolver)
+    public AdminController(AdminService adminService, ChatbotService chatbotService, CurrentUserResolver userResolver) : base(userResolver)
     {
         _adminService = adminService;
+        _chatbotService = chatbotService;
     }
 
     [HttpGet("movies")]
@@ -35,19 +37,25 @@ public class AdminController : ApiControllerBase
     [HttpPost("movies")]
     public async Task<IResult> CreateMovie([FromBody] Movie body)
     {
-        return Results.Ok(await _adminService.CreateMovieAsync(body));
+        var result = await _adminService.CreateMovieAsync(body);
+        _ = Task.Run(() => _chatbotService.IngestAsync());
+        return Results.Ok(result);
     }
 
     [HttpPut("movies/{id:int}")]
     public async Task<IResult> UpdateMovie([FromRoute] int id, [FromBody] Movie body)
     {
-        return ToResult(await _adminService.UpdateMovieAsync(id, body));
+        var result = await _adminService.UpdateMovieAsync(id, body);
+        _ = Task.Run(() => _chatbotService.IngestAsync());
+        return ToResult(result);
     }
 
     [HttpDelete("movies/{id:int}")]
     public async Task<IResult> DeleteMovie([FromRoute] int id)
     {
-        return ToResult(await _adminService.DeleteMovieAsync(id));
+        var result = await _adminService.DeleteMovieAsync(id);
+        _ = Task.Run(() => _chatbotService.IngestAsync());
+        return ToResult(result);
     }
 
     [HttpGet("cinemas")]
@@ -59,19 +67,25 @@ public class AdminController : ApiControllerBase
     [HttpPost("cinemas")]
     public async Task<IResult> CreateCinema([FromBody] Cinema body)
     {
-        return Results.Ok(await _adminService.CreateCinemaAsync(body));
+        var result = await _adminService.CreateCinemaAsync(body);
+        _ = Task.Run(() => _chatbotService.IngestAsync());
+        return Results.Ok(result);
     }
 
     [HttpPut("cinemas/{id:int}")]
     public async Task<IResult> UpdateCinema([FromRoute] int id, [FromBody] Cinema body)
     {
-        return ToResult(await _adminService.UpdateCinemaAsync(id, body));
+        var result = await _adminService.UpdateCinemaAsync(id, body);
+        _ = Task.Run(() => _chatbotService.IngestAsync());
+        return ToResult(result);
     }
 
     [HttpDelete("cinemas/{id:int}")]
     public async Task<IResult> DeleteCinema([FromRoute] int id)
     {
-        return ToResult(await _adminService.DeleteCinemaAsync(id));
+        var result = await _adminService.DeleteCinemaAsync(id);
+        _ = Task.Run(() => _chatbotService.IngestAsync());
+        return ToResult(result);
     }
 
     [HttpGet("rooms")]
@@ -107,19 +121,25 @@ public class AdminController : ApiControllerBase
     [HttpPost("showtimes")]
     public async Task<IResult> CreateShowtime([FromBody] Showtime body)
     {
-        return ToResult(await _adminService.CreateShowtimeAsync(body));
+        var result = await _adminService.CreateShowtimeAsync(body);
+        _ = Task.Run(() => _chatbotService.IngestAsync());
+        return ToResult(result);
     }
 
     [HttpPut("showtimes/{id:int}")]
     public async Task<IResult> UpdateShowtime([FromRoute] int id, [FromBody] Showtime body)
     {
-        return ToResult(await _adminService.UpdateShowtimeAsync(id, body));
+        var result = await _adminService.UpdateShowtimeAsync(id, body);
+        _ = Task.Run(() => _chatbotService.IngestAsync());
+        return ToResult(result);
     }
 
     [HttpDelete("showtimes/{id:int}")]
     public async Task<IResult> DeleteShowtime([FromRoute] int id)
     {
-        return ToResult(await _adminService.DeleteShowtimeAsync(id));
+        var result = await _adminService.DeleteShowtimeAsync(id);
+        _ = Task.Run(() => _chatbotService.IngestAsync());
+        return ToResult(result);
     }
 
     [HttpGet("promotions")]
@@ -131,19 +151,25 @@ public class AdminController : ApiControllerBase
     [HttpPost("promotions")]
     public async Task<IResult> CreatePromotion([FromBody] Promotion body)
     {
-        return Results.Ok(await _adminService.CreatePromotionAsync(body));
+        var result = await _adminService.CreatePromotionAsync(body);
+        _ = Task.Run(() => _chatbotService.IngestAsync());
+        return Results.Ok(result);
     }
 
     [HttpPut("promotions/{id:int}")]
     public async Task<IResult> UpdatePromotion([FromRoute] int id, [FromBody] Promotion body)
     {
-        return ToResult(await _adminService.UpdatePromotionAsync(id, body));
+        var result = await _adminService.UpdatePromotionAsync(id, body);
+        _ = Task.Run(() => _chatbotService.IngestAsync());
+        return ToResult(result);
     }
 
     [HttpDelete("promotions/{id:int}")]
     public async Task<IResult> DeletePromotion([FromRoute] int id)
     {
-        return ToResult(await _adminService.DeletePromotionAsync(id));
+        var result = await _adminService.DeletePromotionAsync(id);
+        _ = Task.Run(() => _chatbotService.IngestAsync());
+        return ToResult(result);
     }
 
     [HttpGet("snacks")]
@@ -155,13 +181,17 @@ public class AdminController : ApiControllerBase
     [HttpPost("snacks")]
     public async Task<IResult> CreateSnack([FromBody] Snack body)
     {
-        return Results.Ok(await _adminService.CreateSnackAsync(body));
+        var result = await _adminService.CreateSnackAsync(body);
+        _ = Task.Run(() => _chatbotService.IngestAsync());
+        return Results.Ok(result);
     }
 
     [HttpPut("snacks/{id:int}")]
     public async Task<IResult> UpdateSnack([FromRoute] int id, [FromBody] Snack body)
     {
-        return ToResult(await _adminService.UpdateSnackAsync(id, body));
+        var result = await _adminService.UpdateSnackAsync(id, body);
+        _ = Task.Run(() => _chatbotService.IngestAsync());
+        return ToResult(result);
     }
 
     [HttpDelete("snacks/{id:int}")]

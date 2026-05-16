@@ -29,7 +29,7 @@ public class MovieService
         };
     }
 
-    public async Task<object> SearchMoviesAsync(string? q, string? genre, int? page, int? size)
+    public async Task<object> SearchMoviesAsync(string? q, string? genre, int? cinemaId, DateTime? fromDate, int? page, int? size)
     {
         var pageValue = Math.Max(0, page ?? 0);
         var sizeValue = Math.Clamp(size ?? 12, 1, 100);
@@ -48,6 +48,21 @@ public class MovieService
             var g = genre.Trim().ToLower();
             query = query.Where(m => m.Genre != null && m.Genre.ToLower().Contains(g));
         }
+
+        if (cinemaId.HasValue || fromDate.HasValue)
+        {
+            var showtimeQuery = _db.Showtimes.AsNoTracking().AsQueryable();
+
+            if (cinemaId.HasValue)
+                showtimeQuery = showtimeQuery.Where(s => s.Room != null && s.Room.CinemaId == cinemaId.Value);
+
+            if (fromDate.HasValue)
+                showtimeQuery = showtimeQuery.Where(s => s.StartTime.Date >= fromDate.Value.Date);
+
+            var movieIdsWithShowtimes = await showtimeQuery.Select(s => s.MovieId).Distinct().ToListAsync();
+            query = query.Where(m => movieIdsWithShowtimes.Contains(m.Id));
+        }
+
 
         query = query.OrderByDescending(x => x.Id);
         var total = await query.CountAsync();
@@ -101,5 +116,70 @@ public class MovieService
                 x.CreatedAt
             })
             .ToListAsync();
+    }
+
+    public async Task<List<object>> SearchSuggestionsAsync(string? q, string? genre, int? cinemaId, DateTime? fromDate)
+    {
+        var kw = q?.Trim().ToLower() ?? "";
+        var query = _db.Movies.AsNoTracking().AsQueryable();
+
+        if (!string.IsNullOrWhiteSpace(q))
+        {
+            query = query.Where(m => m.Title.ToLower().Contains(kw)
+                                     || (m.Description != null && m.Description.ToLower().Contains(kw))
+                                     || (m.Genre != null && m.Genre.ToLower().Contains(kw)));
+        }
+
+        if (!string.IsNullOrWhiteSpace(genre))
+        {
+            var g = genre.Trim().ToLower();
+            query = query.Where(m => m.Genre != null && m.Genre.ToLower().Contains(g));
+        }
+
+        if (cinemaId.HasValue || fromDate.HasValue)
+        {
+            var showtimeQuery = _db.Showtimes.AsNoTracking().AsQueryable();
+
+            if (cinemaId.HasValue)
+                showtimeQuery = showtimeQuery.Where(s => s.Room != null && s.Room.CinemaId == cinemaId.Value);
+
+            if (fromDate.HasValue)
+                showtimeQuery = showtimeQuery.Where(s => s.StartTime.Date >= fromDate.Value.Date);
+
+            var movieIdsWithShowtimes = await showtimeQuery.Select(s => s.MovieId).Distinct().ToListAsync();
+            query = query.Where(m => movieIdsWithShowtimes.Contains(m.Id));
+        }
+
+        var allMovies = await query.ToListAsync();
+
+        var sorted = allMovies
+            .OrderByDescending(x => x.Title.ToLower().StartsWith(kw))
+            .ThenByDescending(x => x.Id)
+            .Take(10)
+            .Select(m => (object)new
+            {
+                m.Id,
+                m.Title,
+                m.Genre,
+                m.PosterUrl,
+                m.Rating,
+                m.DurationMin
+            })
+            .ToList();
+
+        return sorted;
+    }
+
+    public async Task<List<string>> GetAllGenresAsync()
+    {
+        var genres = await _db.Movies
+            .AsNoTracking()
+            .Where(m => m.Genre != null && m.Genre != "")
+            .Select(m => m.Genre!)
+            .Distinct()
+            .OrderBy(g => g)
+            .ToListAsync();
+
+        return genres;
     }
 }
