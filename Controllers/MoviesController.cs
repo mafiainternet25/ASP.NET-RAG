@@ -34,16 +34,36 @@ public class MoviesController : Controller
     }
 
     [HttpGet("movies/search")]
-    public async Task<IResult> SearchMovies([FromQuery] string? q, [FromQuery] string? genre, [FromQuery] int? cinemaId, [FromQuery] DateTime? fromDate, [FromQuery] int? page, [FromQuery] int? size)
+    public async Task<IResult> SearchMovies([FromQuery] string? q, [FromQuery] string? genre, [FromQuery] int? cinemaId, [FromQuery] string? fromDate, [FromQuery] int? page, [FromQuery] int? size)
     {
-        var data = await _movieService.SearchMoviesAsync(q, genre, cinemaId, fromDate, page, size);
+        DateTime? parsedFromDate = null;
+        if (!string.IsNullOrWhiteSpace(fromDate))
+        {
+            Console.WriteLine($"DEBUG SearchMovies: Received fromDate parameter: '{fromDate}'");
+            if (DateTime.TryParse(fromDate, out var dt))
+            {
+                parsedFromDate = dt;
+                Console.WriteLine($"DEBUG SearchMovies: Parsed to DateTime: {parsedFromDate:yyyy-MM-dd HH:mm:ss}");
+            }
+            else
+            {
+                Console.WriteLine($"DEBUG SearchMovies: Failed to parse fromDate: '{fromDate}'");
+            }
+        }
+        var data = await _movieService.SearchMoviesAsync(q, genre, cinemaId, parsedFromDate, page, size);
         return Results.Ok(data);
     }
 
     [HttpGet("movies/suggestions")]
-    public async Task<IResult> GetSearchSuggestions([FromQuery] string? q, [FromQuery] string? genre, [FromQuery] int? cinemaId, [FromQuery] DateTime? fromDate)
+    public async Task<IResult> GetSearchSuggestions([FromQuery] string? q, [FromQuery] string? genre, [FromQuery] int? cinemaId, [FromQuery] string? fromDate)
     {
-        var suggestions = await _movieService.SearchSuggestionsAsync(q, genre, cinemaId, fromDate);
+        DateTime? parsedFromDate = null;
+        if (!string.IsNullOrWhiteSpace(fromDate))
+        {
+            if (DateTime.TryParse(fromDate, out var dt))
+                parsedFromDate = dt;
+        }
+        var suggestions = await _movieService.SearchSuggestionsAsync(q, genre, cinemaId, parsedFromDate);
         return Results.Ok(suggestions);
     }
 

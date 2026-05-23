@@ -4,17 +4,12 @@
 
 <div class="container section">
   <h2>Danh sách phim</h2>
-  
+
   <!-- Real-time Search Section -->
   <div class="filter-section">
     <!-- Search with Dropdown -->
     <div style="position: relative; flex: 1; min-width: 250px;">
-      <input 
-        id="searchInput" 
-        class="search-input" 
-        placeholder="🔍 Tìm theo tên phim..."
-        autocomplete="off"
-      >
+      <input id="searchInput" class="search-input" placeholder="🔍 Tìm theo tên phim..." autocomplete="off">
       <!-- Real-time Suggestions Dropdown -->
       <div id="suggestionsDropdown" class="suggestions-dropdown" style="display: none;">
         <ul id="suggestionsList" class="suggestions-list"></ul>
@@ -33,23 +28,35 @@
       <!-- Will be populated by JavaScript -->
     </select>
 
+    <!-- Showtime Date Filter -->
+    <div style="position: relative; display: flex; align-items: center;">
+      <input type="date" id="showtimeDateSelect" class="filter-select" title="Lọc theo ngày khởi chiếu">
+      <button type="button" class="btn btn-outline"
+              onclick="document.getElementById('showtimeDateSelect').value=''; currentPage=0; searchMovies(0);"
+              style="margin-left: 5px; padding: 0.5rem 0.75rem; font-size: 0.9rem;" title="Xóa ngày">
+        ✕
+      </button>
+    </div>
+
     <!-- Search Button -->
-    <button class="btn btn-primary" onclick="currentPage=0;searchMovies(0)" style="white-space: nowrap; min-width: 100px;">
+    <button class="btn btn-primary" onclick="currentPage=0;searchMovies(0)"
+            style="white-space: nowrap; min-width: 100px;">
       🔍 Tìm
     </button>
   </div>
 
   <!-- Movies Grid -->
   <div id="moviesGrid" class="movies-grid"></div>
-  
+
   <!-- Pagination -->
-  <div id="pagination" class="pagination" style="display:flex;justify-content:center;gap:0.5rem;margin-top:2rem;flex-wrap:wrap"></div>
-  
+  <div id="pagination" class="pagination"
+       style="display:flex;justify-content:center;gap:0.5rem;margin-top:2rem;flex-wrap:wrap"></div>
+
   <!-- Count -->
   <p id="moviesCount" style="text-align:center;color:#888;margin-top:1rem;font-size:0.9rem"></p>
 </div>
 
 @section Scripts {
-  <script src="/js/auth.js"></script>
-  <script src="/js/movies.js"></script>
+  <script src="/js/auth.js?v=2"></script>
+  <script src="/js/movies.js?v=6"></script>
 }

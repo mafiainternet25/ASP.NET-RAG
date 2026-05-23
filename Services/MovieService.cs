@@ -57,9 +57,13 @@ public class MovieService
                 showtimeQuery = showtimeQuery.Where(s => s.Room != null && s.Room.CinemaId == cinemaId.Value);
 
             if (fromDate.HasValue)
-                showtimeQuery = showtimeQuery.Where(s => s.StartTime.Date >= fromDate.Value.Date);
+            {
+                Console.WriteLine($"DEBUG SearchMovies: Filtering by fromDate: {fromDate.Value.Date}");
+                showtimeQuery = showtimeQuery.Where(s => s.StartTime.Date == fromDate.Value.Date);
+            }
 
             var movieIdsWithShowtimes = await showtimeQuery.Select(s => s.MovieId).Distinct().ToListAsync();
+            Console.WriteLine($"DEBUG SearchMovies: Found {movieIdsWithShowtimes.Count} movies with showtimes. IDs: {string.Join(",", movieIdsWithShowtimes)}");
             query = query.Where(m => movieIdsWithShowtimes.Contains(m.Id));
         }
 
@@ -144,7 +148,7 @@ public class MovieService
                 showtimeQuery = showtimeQuery.Where(s => s.Room != null && s.Room.CinemaId == cinemaId.Value);
 
             if (fromDate.HasValue)
-                showtimeQuery = showtimeQuery.Where(s => s.StartTime.Date >= fromDate.Value.Date);
+                showtimeQuery = showtimeQuery.Where(s => s.StartTime.Date == fromDate.Value.Date);
 
             var movieIdsWithShowtimes = await showtimeQuery.Select(s => s.MovieId).Distinct().ToListAsync();
             query = query.Where(m => movieIdsWithShowtimes.Contains(m.Id));

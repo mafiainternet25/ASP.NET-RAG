@@ -108,10 +108,12 @@ async function fetchSuggestions(query) {
   try {
     const genre = document.getElementById('genreSelect')?.value?.trim() || '';
     const cinemaId = document.getElementById('cinemaSelect')?.value?.trim() || '';
+    const showtimeDate = document.getElementById('showtimeDateSelect')?.value?.trim() || '';
 
     let url = `${API}/movies/suggestions?q=${encodeURIComponent(query)}`;
     if (genre) url += `&genre=${encodeURIComponent(genre)}`;
     if (cinemaId) url += `&cinemaId=${cinemaId}`;
+    if (showtimeDate) url += `&fromDate=${encodeURIComponent(showtimeDate)}`;
 
     const response = await fetch(url);
     const suggestions = await response.json();
@@ -219,9 +221,22 @@ async function loadShowtimesForCard(movieId) {
       return;
     }
     
-    // Group showtimes by date
+    // Get today's date (May 23, 2026)
+    const today = new Date(2026, 4, 23); // Month is 0-indexed
+    
+    // Sort showtimes by distance from today
+    const withDistance = showtimes.map(s => {
+      const showDate = new Date(s.startTime);
+      const distance = Math.abs(showDate - today);
+      return { ...s, distance };
+    }).sort((a, b) => a.distance - b.distance);
+    
+    // Keep only 2 closest showtimes
+    const closest2 = withDistance.slice(0, 2);
+    
+    // Group by date
     const grouped = {};
-    showtimes.forEach(s => {
+    closest2.forEach(s => {
       const date = new Date(s.startTime).toLocaleDateString('vi-VN', { month: '2-digit', day: '2-digit' });
       if (!grouped[date]) grouped[date] = [];
       grouped[date].push(s);
@@ -268,8 +283,9 @@ function loadMovies() {
   const q = document.getElementById('searchInput')?.value?.trim();
   const genre = document.getElementById('genreSelect')?.value?.trim();
   const cinemaId = document.getElementById('cinemaSelect')?.value?.trim();
+  const showtimeDate = document.getElementById('showtimeDateSelect')?.value?.trim();
   
-  if (q || genre || cinemaId) {
+  if (q || genre || cinemaId || showtimeDate) {
     searchMovies(currentPage);
     return;
   }
@@ -298,11 +314,26 @@ function searchMovies(page = 0) {
   const q = document.getElementById('searchInput')?.value?.trim() || '';
   const genre = document.getElementById('genreSelect')?.value?.trim() || '';
   const cinemaId = document.getElementById('cinemaSelect')?.value?.trim() || '';
+  let showtimeDate = document.getElementById('showtimeDateSelect')?.value?.trim() || '';
+  
+  // Ensure date is in YYYY-MM-DD format
+  if (showtimeDate) {
+    const dateObj = new Date(showtimeDate + 'T00:00:00Z');
+    if (!isNaN(dateObj)) {
+      showtimeDate = dateObj.toISOString().split('T')[0];
+      console.log(`📅 Normalized showtimeDate: "${showtimeDate}"`);
+    }
+  }
+  
+  console.log(`🔍 searchMovies called: q="${q}", genre="${genre}", cinemaId="${cinemaId}", showtimeDate="${showtimeDate}"`);
   
   currentPage = page;
   
   let url = `${API}/movies/search?q=${encodeURIComponent(q)}&genre=${encodeURIComponent(genre)}&page=${page}&size=${PAGE_SIZE}`;
   if (cinemaId) url += `&cinemaId=${cinemaId}`;
+  if (showtimeDate) url += `&fromDate=${encodeURIComponent(showtimeDate)}`;
+  
+  console.log(`📡 Final URL: ${url}`);
   
   fetch(url)
     .then(res => res.json())
@@ -312,6 +343,7 @@ function searchMovies(page = 0) {
         totalPages: data?.totalPages ?? 0,
         totalElements: data?.totalElements ?? list.length
       };
+      console.log(`✅ Response: ${list.length} movies found`);
       displayMovies(list, meta);
       hideSuggestionsDropdown();
     })
@@ -384,6 +416,20 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   } else {
     console.warn('⚠️ cinemaSelect not found during event listener setup');
+  }
+
+  // Showtime date filter change
+  const showtimeDateSelect = document.getElementById('showtimeDateSelect');
+  if (showtimeDateSelect) {
+    const handleDateChange = () => {
+      console.log('📅 Showtime date changed:', showtimeDateSelect.value);
+      currentPage = 0;
+      searchMovies(0);
+    };
+    showtimeDateSelect.addEventListener('change', handleDateChange);
+    showtimeDateSelect.addEventListener('input', handleDateChange);
+  } else {
+    console.warn('⚠️ showtimeDateSelect not found during event listener setup');
   }
 
   // Close suggestions when clicking outside
