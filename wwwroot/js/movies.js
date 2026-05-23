@@ -221,8 +221,8 @@ async function loadShowtimesForCard(movieId) {
       return;
     }
     
-    // Get today's date (May 23, 2026)
-    const today = new Date(2026, 4, 23); // Month is 0-indexed
+    // Get today's date
+    const today = new Date(); // Always use current date
     
     // Sort showtimes by distance from today
     const withDistance = showtimes.map(s => {
