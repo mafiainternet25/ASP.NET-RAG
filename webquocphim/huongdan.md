@@ -667,4 +667,5 @@ Chạy: `docker-compose up -d`
 >
 > 
 newStart < existingEnd + 30: Giờ bắt đầu của phim mới chui tọt vào lúc phim cũ vẫn đang chiếu hoặc đang dọn rạp.
+
 newEnd > existing.StartTime - 30: Giờ kết thúc của phim mới lại lấn sang giờ chuẩn bị chiếu của phim cũ.
