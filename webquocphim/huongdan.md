@@ -664,3 +664,7 @@ Chạy: `docker-compose up -d`
 ---
 
 > 💬 **Tip vibe code:** Khi prompt mỗi task, luôn paste phần **Database Schema** + **Quan hệ chính** vào đầu prompt. Với tính năng snack, nhớ paste thêm **SQL tạo bảng snacks** và **SnackSelectViewModel** để AI sinh đúng flow chọn snack sau khi chọn ghế.
+>
+> 
+newStart < existingEnd + 30: Giờ bắt đầu của phim mới chui tọt vào lúc phim cũ vẫn đang chiếu hoặc đang dọn rạp.
+newEnd > existing.StartTime - 30: Giờ kết thúc của phim mới lại lấn sang giờ chuẩn bị chiếu của phim cũ.
