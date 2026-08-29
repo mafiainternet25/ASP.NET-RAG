@@ -664,12 +664,12 @@ Chạy: `docker-compose up -d`
 ---
 
 > 💬 **Tip vibe code:** Khi prompt mỗi task, luôn paste phần **Database Schema** + **Quan hệ chính** vào đầu prompt. Với tính năng snack, nhớ paste thêm **SQL tạo bảng snacks** và **SnackSelectViewModel** để AI sinh đúng flow chọn snack sau khi chọn ghế.
->
-> 
+
+---
 newStart < existingEnd + 30: Giờ bắt đầu của phim mới chui tọt vào lúc phim cũ vẫn đang chiếu hoặc đang dọn rạp.
 
 newEnd > existing.StartTime - 30: Giờ kết thúc của phim mới lại lấn sang giờ chuẩn bị chiếu của phim cũ.
-
+---
 Nếu biến booked là true (ghế Đã bán): Nó trả về một chuỗi rỗng ''. Khối HTML in ra sẽ là: <div class="seat booked">A1</div>. Hoàn toàn không có sự kiện click nào!
 
 Nếu biến booked là false (ghế Trống): Nó trả về chuỗi sự kiện. Khối HTML in ra sẽ là: <div class="seat available" onclick="toggleSeat(this)">A2</div>. Khách có thể click thoải mái.
